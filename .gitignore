@@ -1,0 +1,35 @@
+# Operating systems and editors
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# Environment and credentials
+.env
+.env.*
+!.env.example
+default-env.json
+*.pem
+*.key
+*.p12
+service-key*.json
+
+# Node.js and CAP
+node_modules/
+gen/
+dist/
+coverage/
+*.db
+*.sqlite
+npm-debug.log*
+
+# MTA and Cloud Foundry
+mta_archives/
+*.mtar
+.cf/
+
+# Tests and temporary files
+.nyc_output/
+tmp/
+temp/
