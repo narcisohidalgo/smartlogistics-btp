@@ -1,0 +1,29 @@
+name: Bug
+description: Report reproducible incorrect behavior
+title: "[Bug] "
+labels:
+  - bug
+body:
+  - type: textarea
+    id: behavior
+    attributes:
+      label: Observed behavior
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Sanitized evidence
+      description: Remove tenant IDs, emails, tokens, credentials and service keys.

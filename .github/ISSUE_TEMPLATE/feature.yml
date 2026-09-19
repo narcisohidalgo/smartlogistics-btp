@@ -1,0 +1,43 @@
+name: Feature
+description: Implement a SmartLogistics backlog item
+title: "[SL-###] "
+labels:
+  - enhancement
+body:
+  - type: input
+    id: backlog
+    attributes:
+      label: Backlog ID
+      placeholder: SL-040
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Desired outcome
+      description: Describe the observable business or technical result.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      placeholder: |
+        - [ ] Criterion one
+        - [ ] Criterion two
+    validations:
+      required: true
+  - type: dropdown
+    id: component
+    attributes:
+      label: Component
+      options:
+        - ABAP Cloud
+        - CAP
+        - Fiori
+        - Integration Suite
+        - Generative AI
+        - SAP BTP administration
+        - Documentation
+    validations:
+      required: true
