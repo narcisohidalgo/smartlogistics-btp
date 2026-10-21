@@ -1,0 +1,190 @@
+@baseUrl = http://localhost:4004/logistics
+
+### ============================================================
+### 1. AUTHENTICATION / VIEWER
+### ============================================================
+
+### No authentication -> 401 Unauthorized
+GET {{baseUrl}}/Shipments?$top=1
+Accept: application/json
+
+
+### Viewer can read Shipments -> 200 OK
+GET {{baseUrl}}/Shipments?$top=1
+Accept: application/json
+Authorization: Basic dmlld2VyOnZpZXdlcg==
+
+
+### Viewer can read Incidents -> 200 OK
+GET {{baseUrl}}/Incidents?$top=1
+Accept: application/json
+Authorization: Basic dmlld2VyOnZpZXdlcg==
+
+
+### ============================================================
+### 2. RBAC
+### ============================================================
+
+### Viewer cannot use AI Assistant -> 403 Forbidden
+POST {{baseUrl}}/Shipments(11111111-1111-1111-1111-111111111111)/LogisticsService.askAssistant
+Content-Type: application/json
+Authorization: Basic dmlld2VyOnZpZXdlcg==
+
+{
+  "message": "What is the shipment status?",
+  "history": "[]"
+}
+
+
+### Operator can use AI Assistant -> 200 OK
+POST {{baseUrl}}/Shipments(11111111-1111-1111-1111-111111111111)/LogisticsService.askAssistant
+Content-Type: application/json
+Authorization: Basic b3BlcmF0b3I6b3BlcmF0b3I=
+
+{
+  "message": "What is the shipment status?",
+  "history": "[]"
+}
+
+
+### ============================================================
+### 3. GROUNDED AI
+### ============================================================
+
+### Temperature procedure with grounded sources
+POST {{baseUrl}}/Shipments(11111111-1111-1111-1111-111111111111)/LogisticsService.askAssistant
+Content-Type: application/json
+Authorization: Basic b3BlcmF0b3I6b3BlcmF0b3I=
+
+{
+  "message": "What should I do with a medium temperature alert?",
+  "history": "[]"
+}
+
+
+### Delay escalation policy
+POST {{baseUrl}}/Shipments(11111111-1111-1111-1111-111111111111)/LogisticsService.askAssistant
+Content-Type: application/json
+Authorization: Basic b3BlcmF0b3I6b3BlcmF0b3I=
+
+{
+  "message": "What should I do if this shipment is delayed more than 4 hours?",
+  "history": "[]"
+}
+
+
+### Weather rerouting guidance
+POST {{baseUrl}}/Shipments(11111111-1111-1111-1111-111111111111)/LogisticsService.askAssistant
+Content-Type: application/json
+Authorization: Basic b3BlcmF0b3I6b3BlcmF0b3I=
+
+{
+  "message": "Should I reroute this shipment because of high weather risk?",
+  "history": "[]"
+}
+
+
+### ============================================================
+### 4. SHIPMENT OPERATIONS
+### ============================================================
+
+### Check shipment before delivery
+GET {{baseUrl}}/Shipments(11111111-1111-1111-1111-111111111111)
+Accept: application/json
+Authorization: Basic dmlld2VyOnZpZXdlcg==
+
+
+### Mark shipment as delivered -> Operator
+POST {{baseUrl}}/Shipments(11111111-1111-1111-1111-111111111111)/LogisticsService.markAsDelivered
+Content-Type: application/json
+Authorization: Basic b3BlcmF0b3I6b3BlcmF0b3I=
+
+{}
+
+
+### Check delivered shipment
+GET {{baseUrl}}/Shipments(11111111-1111-1111-1111-111111111111)
+Accept: application/json
+Authorization: Basic dmlld2VyOnZpZXdlcg==
+
+
+### Mark shipment as delivered again -> 400
+POST {{baseUrl}}/Shipments(11111111-1111-1111-1111-111111111111)/LogisticsService.markAsDelivered
+Content-Type: application/json
+Authorization: Basic b3BlcmF0b3I6b3BlcmF0b3I=
+
+{}
+
+
+### ============================================================
+### 5. INCIDENT OPERATIONS
+### ============================================================
+
+### Check incident
+GET {{baseUrl}}/Incidents(dddddddd-dddd-dddd-dddd-ddddddddddd1)
+Accept: application/json
+Authorization: Basic dmlld2VyOnZpZXdlcg==
+
+
+### Resolve incident -> Operator
+POST {{baseUrl}}/Incidents(dddddddd-dddd-dddd-dddd-ddddddddddd1)/LogisticsService.resolveIncident
+Content-Type: application/json
+Authorization: Basic b3BlcmF0b3I6b3BlcmF0b3I=
+
+{}
+
+
+### Check resolved incident
+GET {{baseUrl}}/Incidents(dddddddd-dddd-dddd-dddd-ddddddddddd1)
+Accept: application/json
+Authorization: Basic dmlld2VyOnZpZXdlcg==
+
+
+### Resolve incident again -> 400
+POST {{baseUrl}}/Incidents(dddddddd-dddd-dddd-dddd-ddddddddddd1)/LogisticsService.resolveIncident
+Content-Type: application/json
+Authorization: Basic b3BlcmF0b3I6b3BlcmF0b3I=
+
+{}
+
+
+### ============================================================
+### 6. BUSINESS RULES
+### ============================================================
+
+### Invalid dates -> 400
+POST {{baseUrl}}/Shipments
+Content-Type: application/json
+Authorization: Basic b3BlcmF0b3I6b3BlcmF0b3I=
+
+{
+  "shipmentNumber": "SHP-INVALID-DATES",
+  "purchaseOrderId": "PO-INVALID-DATES",
+  "carrier": "Test Carrier",
+  "trackingNumber": "TEST-INVALID-DATES",
+  "originCountry": "ESP",
+  "originCity": "Cordoba",
+  "destinationCountry": "ESP",
+  "destinationCity": "Madrid",
+  "plannedDeparture": "2026-10-20T12:00:00Z",
+  "plannedArrival": "2026-10-20T10:00:00Z"
+}
+
+
+### Duplicate Purchase Order -> 409
+POST {{baseUrl}}/Shipments
+Content-Type: application/json
+Authorization: Basic b3BlcmF0b3I6b3BlcmF0b3I=
+
+{
+  "shipmentNumber": "SHP-DUPLICATE-PO",
+  "purchaseOrderId": "PO00000001",
+  "carrier": "Test Carrier",
+  "trackingNumber": "TEST-DUPLICATE-PO",
+  "originCountry": "ESP",
+  "originCity": "Cordoba",
+  "destinationCountry": "ESP",
+  "destinationCity": "Madrid",
+  "plannedDeparture": "2026-10-20T10:00:00Z",
+  "plannedArrival": "2026-10-20T18:00:00Z"
+}

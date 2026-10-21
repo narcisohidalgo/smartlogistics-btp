@@ -1,0 +1,115 @@
+_schema-version: 3.3.0
+ID: smartlogistics-cap
+description: A simple CAP project.
+version: 1.0.0
+modules:
+- name: smartlogistics-cap-srv
+  type: nodejs
+  path: gen/srv
+  requires:
+  - name: smartlogistics-cap-db
+  - name: smartlogistics-cap-auth
+  provides:
+  - name: srv-api
+    properties:
+      srv-url: ${default-url}
+  parameters:
+    buildpack: nodejs_buildpack
+    instances: 1
+  build-parameters:
+    builder: npm-ci
+- name: smartlogistics-cap-db-deployer
+  type: hdb
+  path: gen/db
+  requires:
+  - name: smartlogistics-cap-db
+  parameters:
+    buildpack: nodejs_buildpack
+- name: smartlogistics-cap-app-content
+  type: com.sap.application.content
+  path: .
+  requires:
+  - name: smartlogistics-cap-repo-host
+    parameters:
+      content-target: true
+  build-parameters:
+    build-result: resources
+    requires:
+    - artifacts:
+      - smartlogisticssmartlogisticsfiori.zip
+      name: smartlogisticssmartlogisticsfiori
+      target-path: resources/
+- name: smartlogisticssmartlogisticsfiori
+  type: html5
+  path: app/smartlogistics-fiori
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+resources:
+- name: smartlogistics-cap-db
+  type: com.sap.xs.hdi-container
+  parameters:
+    service: hana
+    service-plan: hdi-shared
+- name: smartlogistics-cap-auth
+  type: org.cloudfoundry.managed-service
+  parameters:
+    config:
+      oauth2-configuration:
+        credential-types:
+        - binding-secret
+        - x509
+      tenant-mode: dedicated
+      xsappname: smartlogistics-cap-${org}-${space}
+    path: ./xs-security.json
+    service: xsuaa
+    service-plan: application
+- name: smartlogistics-cap-repo-host
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: html5-apps-repo
+    service-name: smartlogistics-cap-html5-service
+    service-plan: app-host
+- name: smartlogistics-cap-destination-service
+  type: org.cloudfoundry.managed-service
+  requires:
+  - name: srv-api
+  parameters:
+    config:
+      HTML5Runtime_enabled: true
+      init_data:
+        instance:
+          destinations:
+          - Authentication: NoAuthentication
+            Name: ui5
+            ProxyType: Internet
+            Type: HTTP
+            URL: https://ui5.sap.com
+          - Name: smartlogistics-cap-api
+            Description: SmartLogistics CAP service
+            Authentication: NoAuthentication
+            ProxyType: Internet
+            Type: HTTP
+            URL: ~{srv-api/srv-url}
+            HTML5.DynamicDestination: true
+            HTML5.ForwardAuthToken: true
+          existing_destinations_policy: update
+      version: 1.0.0
+    service: destination
+    service-name: smartlogistics-cap-destination-service
+    service-plan: lite
+parameters:
+  deploy_mode: html5-repo
+  enable-parallel-deployments: true
+build-parameters:
+  before-all:
+  - builder: custom
+    commands:
+    - npm ci
+    - npx cds build --production
+    - rm -rf gen/srv/ai
+    - cp -R ai gen/srv/ai

@@ -1,0 +1,50 @@
+{
+  "promptTemplating": {
+    "prompt": {
+      "template": [
+        {
+          "role": "system",
+          "content": "You are SmartLogistics AI Assistant, an assistant specialized in logistics and transportation operations. Answer questions using only the shipment context, incidents, weather information and conversation history provided to you. Do not invent facts. If the available data is insufficient, state that clearly. Keep answers concise, practical and useful for a logistics operator."
+        },
+        {
+          "role": "user",
+          "content": "Current SmartLogistics shipment context:\n\nShipment number: {{?shipmentNumber}}\nShipment status: {{?shipmentStatus}}\nOrigin: {{?originCity}}, {{?originCountry}}\nDestination: {{?destinationCity}}, {{?destinationCountry}}\nCarrier: {{?carrier}}\nTracking number: {{?trackingNumber}}\nPlanned departure: {{?plannedDeparture}}\nPlanned arrival: {{?plannedArrival}}\nWeather risk: {{?weatherRisk}}\nWeather condition: {{?weatherCondition}}\n\nCurrent incidents:\n{{?incidents}}\n\nUser question:\n{{?message}}\n\nReturn the answer using the requested structured response format."
+        }
+      ],
+      "response_format": {
+        "type": "json_schema",
+        "json_schema": {
+          "name": "smartlogistics_assistant_response",
+          "strict": true,
+          "schema": {
+            "type": "object",
+            "properties": {
+              "answer": {
+                "type": "string"
+              },
+              "suggestedActions": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "answer",
+              "suggestedActions"
+            ],
+            "additionalProperties": false
+          }
+        }
+      }
+    },
+    "model": {
+      "name": "anthropic--claude-4.5-haiku",
+      "version": "1",
+      "params": {
+        "max_tokens": 2000,
+        "temperature": 0.2
+      }
+    }
+  }
+}

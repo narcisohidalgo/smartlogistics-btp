@@ -1,0 +1,43 @@
+{
+  "scopes": [
+    {
+      "name": "$XSAPPNAME.Viewer",
+      "description": "Read access to SmartLogistics business data"
+    },
+    {
+      "name": "$XSAPPNAME.Operator",
+      "description": "Execute SmartLogistics operational actions"
+    },
+    {
+      "name": "$XSAPPNAME.Supervisor",
+      "description": "Perform privileged SmartLogistics operations"
+    }
+  ],
+  "attributes": [],
+  "role-templates": [
+    {
+      "name": "Viewer",
+      "description": "SmartLogistics read-only user",
+      "scope-references": [
+        "$XSAPPNAME.Viewer"
+      ]
+    },
+    {
+      "name": "Operator",
+      "description": "SmartLogistics logistics operator",
+      "scope-references": [
+        "$XSAPPNAME.Viewer",
+        "$XSAPPNAME.Operator"
+      ]
+    },
+    {
+      "name": "Supervisor",
+      "description": "SmartLogistics logistics supervisor",
+      "scope-references": [
+        "$XSAPPNAME.Viewer",
+        "$XSAPPNAME.Operator",
+        "$XSAPPNAME.Supervisor"
+      ]
+    }
+  ]
+}

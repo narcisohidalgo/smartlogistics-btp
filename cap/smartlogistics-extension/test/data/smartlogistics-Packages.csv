@@ -1,0 +1,5 @@
+ID,shipment_ID,packageNumber,description,quantity,unit,weight,weightUnit,length,width,height,dimensionUnit
+aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa1,11111111-1111-1111-1111-111111111111,PKG000001,Temperature Sensors,4,EA,8.500,KG,40.00,30.00,25.00,CM
+aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaa2,11111111-1111-1111-1111-111111111111,PKG000002,Packaging Materials,10,EA,5.200,KG,60.00,40.00,30.00,CM
+bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbb1,22222222-2222-2222-2222-222222222222,PKG000003,GPS Trackers,8,EA,12.000,KG,50.00,35.00,30.00,CM
+cccccccc-cccc-cccc-cccc-ccccccccccc1,33333333-3333-3333-3333-333333333333,PKG000004,Refrigerated Container,2,EA,850.000,KG,120.00,100.00,110.00,CM

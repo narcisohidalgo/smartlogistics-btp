@@ -1,0 +1,73 @@
+{
+  "config": {
+    "modules": {
+      "prompt_templating": {
+        "prompt": {
+          "template": [
+            {
+              "role": "system",
+              "content": "You are SmartLogistics AI Incident Analyzer, an assistant specialized in analyzing logistics and transportation incidents.\n\nAnalyze only the information provided about the shipment and incident. Do not invent facts that are not present in the input.\n\nYour task is to:\n- summarize the incident clearly;\n- identify the most probable cause based on the available information;\n- assess the operational impact on the shipment;\n- assign a priority level: LOW, MEDIUM, HIGH, or CRITICAL;\n- recommend concrete actions that a logistics operator should take.\n\nKeep recommendations practical, concise, and directly related to the incident.\n\nIf there is not enough information to determine a cause, state that the cause cannot be determined from the available data.\n\nThe response must be suitable for consumption by a business application and must not contain markdown."
+            },
+            {
+              "role": "user",
+              "content": "Analyze the following SmartLogistics incident:\n\nIncident title: {{?incidentTitle}}\nIncident description: {{?incidentDescription}}\nIncident severity: {{?incidentSeverity}}\nIncident status: {{?incidentStatus}}\n\nShipment number: {{?shipmentNumber}}\nShipment status: {{?shipmentStatus}}\nOrigin: {{?originCity}}, {{?originCountry}}\nDestination: {{?destinationCity}}, {{?destinationCountry}}\nWeather risk: {{?weatherRisk}}\nWeather condition: {{?weatherCondition}}\n\nReturn the analysis using the requested structured response format."
+            }
+          ],
+          "defaults": {},
+          "response_format": {
+            "type": "json_schema",
+            "json_schema": {
+              "name": "smartlogistics_incident_analysis",
+              "strict": true,
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "summary": {
+                    "type": "string"
+                  },
+                  "probableCause": {
+                    "type": "string"
+                  },
+                  "operationalImpact": {
+                    "type": "string"
+                  },
+                  "priority": {
+                    "type": "string",
+                    "enum": [
+                      "LOW",
+                      "MEDIUM",
+                      "HIGH",
+                      "CRITICAL"
+                    ]
+                  },
+                  "recommendedActions": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "required": [
+                  "summary",
+                  "probableCause",
+                  "operationalImpact",
+                  "priority",
+                  "recommendedActions"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "model": {
+          "name": "anthropic--claude-4.5-haiku",
+          "params": {
+            "max_tokens": 64000,
+            "temperature": 1
+          },
+          "version": "1"
+        }
+      }
+    }
+  }
+}
