@@ -1,3 +1,19 @@
-# Postman
+# API Testing
 
-Collections and environment templates will be added as APIs become available. Real tokens, credentials and account-specific secrets must not be committed.
+The current manual API suite is [`cap/smartlogistics-extension/test.http`](../cap/smartlogistics-extension/test.http), which can be executed from SAP Business Application Studio or a compatible REST client.
+
+Validated scenarios include:
+
+- unauthenticated request → `401`;
+- Viewer read → `200`;
+- Viewer AI action → `403`;
+- Operator AI action → `200`;
+- local grounded answer with sources → `200`;
+- mark shipment delivered → `200`, repeated action → `400`;
+- resolve incident → `200`, repeated action → `400`;
+- invalid planned dates → `400`;
+- duplicate purchase-order shipment → `409`.
+
+The Basic authorization values in `test.http` encode the local CAP mock users from `package.json`; they are not BTP credentials. No production tokens or service keys belong in this directory.
+
+A Postman collection is optional Phase 14 work because the checked-in HTTP suite already provides reproducible manual coverage.

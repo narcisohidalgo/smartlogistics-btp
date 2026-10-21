@@ -1,63 +1,78 @@
 # Solution Architecture
 
-## Logical architecture
+## Implemented topology
 
 ```mermaid
 flowchart TD
-    UI["SAP Fiori\nFiori elements and SAPUI5"]
-    CAP["SAP CAP\nLogistics extension"]
-    DB[("SAP HANA Cloud")]
-    AI["SAP Generative AI\nAnalysis and RAG"]
-    CPI["SAP Integration Suite\nOrchestration and mapping"]
-    ABAP["ABAP Cloud\nCDS and RAP core"]
-    EXT["External Weather API"]
-
-    UI -->|OData V4| CAP
-    UI -->|OData V4| ABAP
-    CAP --> DB
-    CAP --> AI
-    CPI --> CAP
-    CPI --> ABAP
-    CPI --> EXT
+    PO["Fiori Orders"] --> ABAP["ABAP Cloud\nCDS and RAP"]
+    ABAP --> CPI["Integration Suite\nOrder synchronization"]
+    CPI --> CAP["SAP CAP\nNode.js logistics service"]
+    LOG["Fiori Logistics\nSAPUI5 extensions"] --> CAP
+    CAP --> HANA[("SAP HANA Cloud")]
+    CAP --> WEATHER["Open-Meteo"]
+    CAP --> AI["SAP AI Core\nOrchestration"]
+    WORKZONE["SAP Build Work Zone"] --> LOG
 ```
 
 ## Data ownership
 
-| System | Owned entities | Integration view of external data |
+| System | Owned entities | External reference/context |
 |---|---|---|
-| ABAP Cloud | Supplier, Product, PurchaseOrder, PurchaseOrderItem | None in MVP |
-| SAP CAP / HANA Cloud | Shipment, TrackingEvent, Incident, AIRecommendation | Purchase-order identifiers and required read-only context |
-| External API | Weather observations or forecasts | Normalized weather-risk message |
+| ABAP Cloud | Supplier, Product, PurchaseOrder, PurchaseOrderItem | None in v1.0 |
+| SAP CAP / HANA Cloud | Shipment, Package, Incident | Purchase-order ID from ABAP |
+| Open-Meteo | Geocoding and forecast data | Normalized values stored on Shipment |
 
-The same business entity must not be independently writable in ABAP Cloud and CAP. CAP stores an order reference and the minimum snapshot required for traceability, while ABAP Cloud remains the source of truth for the purchase order.
+The same master entity is not independently writable in ABAP Cloud and CAP. CAP stores the purchase-order identifier required for logistics traceability; ABAP remains the source of truth.
 
-## Principal integration flows
+## Implemented integration paths
 
-### `SL_ORDER_SYNC`
+### Approved order: ABAP Cloud → Integration Suite → CAP
 
-1. Obtain or receive an approved purchase order from ABAP Cloud.
-2. Validate and filter its business status.
-3. Map the purchase-order payload to the shipment-creation contract.
-4. Create the shipment through the CAP API.
-5. Handle, log and expose failures without silently losing the message.
+1. An approved purchase order is exposed by the RAP OData V4 service.
+2. The published Integration Suite flow obtains/transforms the order payload.
+3. The CAP logistics API receives the shipment creation request.
+4. CAP rejects a second shipment for the same purchase-order identifier with `409 Conflict`.
+5. HANA Cloud persists the logistics record.
 
-### `SL_WEATHER_RISK`
+### Weather: CAP → Open-Meteo
 
-1. Request weather data for the shipment destination or route proxy.
-2. Normalize the external response.
-3. Classify the risk using deterministic routing rules.
-4. Create an incident in CAP when the threshold is reached.
-5. Trigger AI analysis after the incident exists.
+1. An Operator runs `refreshWeather` for a shipment.
+2. CAP geocodes the destination city.
+3. CAP requests the forecast for the planned-arrival date.
+4. Deterministic rules classify LOW, MEDIUM or HIGH risk.
+5. CAP stores the forecast and risk fields on the shipment.
+
+Open-Meteo is called directly by CAP. There is no separate weather iFlow in the delivered implementation.
+
+### AI actions
+
+- `analyzeIncident` combines incident and shipment context and returns a validated structured analysis.
+- `askAssistant` combines shipment, incidents, weather data and conversation history.
+- `SMARTLOGISTICS_AI_MODE=sap` activates SAP AI SDK orchestration with a bound AI Core service.
+- The default `mock` mode provides deterministic local responses and supports automated tests.
+- The local lexical retriever supplies relevant excerpts and source labels from project-owned documents; it is not vector RAG.
 
 ## Security model
 
-- ABAP DCL and RAP feature control protect procurement data and actions.
-- XSUAA scopes and role templates protect CAP APIs and UI applications.
-- BTP role collections map business roles to application roles.
-- Destinations encapsulate target URLs and authentication settings.
-- Integration Suite security material stores credentials and certificates.
-- Service keys are used only for development or integration scenarios that require them and are never committed.
+- ABAP DCL and RAP controls protect procurement data and actions.
+- XSUAA defines `Viewer`, `Operator` and `Supervisor` scopes and role templates.
+- BTP role collections map business users to those application roles.
+- CAP `@requires` and `@restrict` rules protect entities and bound actions.
+- Work Zone and the Destination service forward the authenticated JWT to CAP.
+- Integration credentials remain in BTP security material/service bindings and are not committed.
 
 ## Deployment topology
 
-The target landscape begins with a development subaccount and Cloud Foundry space. Shared services may be separated where the available SAP BTP account model permits it. Trial or free-tier constraints will be documented explicitly; mocks will preserve a runnable local demo when a commercial service is unavailable.
+The CAP multi-target application contains:
+
+- Node.js service module;
+- HANA HDI deployer and container;
+- Fiori HTML5 module and HTML5 Application Repository content;
+- XSUAA service;
+- Destination service with JWT forwarding.
+
+Generated `gen`, `dist`, `mta_archives` and `*.mtar` outputs are intentionally excluded from Git.
+
+## Grounding boundary
+
+SAP Document Grounding was validated as a separate Basic Trial experiment. The repository retains an orchestration configuration as technical evidence, while the runnable local assistant uses a deterministic lexical retriever. These are two distinct capabilities and are documented separately.

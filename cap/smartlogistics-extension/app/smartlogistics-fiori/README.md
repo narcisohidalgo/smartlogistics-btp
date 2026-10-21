@@ -1,35 +1,28 @@
-## Application Details
-|               |
-| ------------- |
-|**Generation Date and Time**<br>Thu Oct 08 2026 09:03:10 GMT+0000 (Coordinated Universal Time)|
-|**App Generator**<br>SAP Fiori Application Generator|
-|**App Generator Version**<br>1.33.0|
-|**Generation Platform**<br>SAP Business Application Studio|
-|**Template Used**<br>List Report Page V4|
-|**Service Type**<br>Local CAP|
-|**Service URL**<br>http://localhost:4004/logistics/|
-|**Module Name**<br>smartlogistics-fiori|
-|**Application Title**<br>SmartLogistics|
-|**Namespace**<br>smartlogistics|
-|**UI5 Theme**<br>sap_horizon|
-|**UI5 Version**<br>1.153.0|
-|**Enable TypeScript**<br>False|
-|**Add Eslint configuration**<br>True, see https://www.npmjs.com/package/@sap-ux/eslint-plugin-fiori-tools#rules for the eslint rules.|
-|**Main Entity**<br>Shipments|
-|**Navigation Entity**<br>None|
+# SmartLogistics Fiori Application
 
-## smartlogistics-fiori
+Fiori elements List Report/Object Page for the CAP `Shipments` entity, generated with SAP Fiori tools and extended with SAPUI5 actions.
 
-SAP Fiori application for SmartLogistics shipment and incident management
+## Implemented features
 
-### Starting the generated app
+- Shipment list and Object Page over `/logistics/` OData V4.
+- Package and incident information through CDS annotations.
+- `Mark as Delivered` and weather refresh actions.
+- AI Incident Analyzer action for a selected incident.
+- Shipment-aware AI Assistant dialog with conversation history, suggested actions and source labels.
+- XSUAA-protected routing to CAP through the `smartlogistics-cap-api` destination.
+- HTML5 Application Repository deployment and SAP Build Work Zone access.
 
--   This app has been generated using the SAP Fiori tools - App Generator, as part of the SAP Fiori tools suite.  To launch the generated app, start your CAP project:  and navigate to the following location in your browser:
+## Local start
 
-http://localhost:4004/smartlogistics-fiori/webapp/index.html
+From `cap/smartlogistics-extension`:
 
-#### Pre-requisites:
+```bash
+npm ci
+npm run watch-smartlogistics-fiori
+```
 
-1. Active NodeJS LTS (Long Term Support) version and associated supported NPM version.  (See https://nodejs.org)
+The app was generated as a List Report Page V4 with the `sap_horizon` theme. `AssistantActions.js` and `CustomActions.js` contain the custom SAPUI5 extensions.
 
+## Security
 
+The application route requires XSUAA in the deployed environment. The Destination service forwards the authenticated JWT to CAP; CAP remains responsible for enforcing Viewer/Operator authorization.

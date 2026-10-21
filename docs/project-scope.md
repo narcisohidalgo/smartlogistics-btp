@@ -1,62 +1,84 @@
-# Project Scope — Version 1.0
+# Project Scope — Implemented Version 1.0
 
 ## Product vision
 
-SmartLogistics BTP gives procurement and logistics teams a shared, traceable flow from purchase-order approval to shipment-risk resolution. It uses a fictional agri-food business so the demo remains credible and connected to real supply-chain concerns.
+SmartLogistics BTP gives procurement and logistics teams a traceable flow from purchase-order approval to shipment monitoring and incident response. It uses the fictional agri-food company GreenFields Foods to connect the solution with realistic supply-chain concerns.
 
-## Actors
+## Actors and authorization
 
-| Actor | Responsibilities | Planned role collection |
+| Actor | Responsibilities | Implemented access |
 |---|---|---|
-| Procurement Manager | Maintain suppliers and products; create and approve purchase orders | `SmartLogistics_Procurement` |
-| Logistics Manager | Monitor shipments, tracking, incidents, risks and AI recommendations | `SmartLogistics_Logistics` |
-| Administrator | Configure SAP BTP services, security, roles and integrations | `SmartLogistics_Admin` |
+| Procurement Manager | Maintain master data and manage purchase orders | ABAP RAP authorization/DCL and procurement UI |
+| Logistics Viewer | Monitor shipments, packages, incidents and weather risk | `SmartLogistics_Viewer` |
+| Logistics Operator | Update logistics data and execute operational/AI actions | `SmartLogistics_Operator` |
+| Logistics Supervisor | Cumulative access and future privileged operations | `SmartLogistics_Supervisor` |
+| Administrator | Configure BTP services, destinations, trust and role collections | BTP platform administration |
 
-## Functional requirements
+The current CAP service has Viewer and Operator enforcement. Supervisor is defined as a cumulative XSUAA role template and role collection; no Supervisor-only CAP action is implemented in v1.0.
 
-### Procurement core
+## Delivered capabilities
 
-- Maintain supplier master data.
-- Maintain product master data.
-- Create purchase orders and composed items.
-- Set the initial order status to `NEW`.
-- Calculate item amount as quantity multiplied by unit price.
-- Calculate total order amount as the sum of item amounts.
-- Validate supplier, product, quantity and delivery date.
-- Approve orders only from `NEW`.
-- Cancel orders according to the permitted lifecycle.
+### ABAP Cloud procurement core
 
-### Logistics extension
+- Supplier and product master data.
+- Managed RAP purchase-order business object with composed items and draft handling.
+- Initial status, monetary calculations and business validations.
+- Approve and cancel lifecycle actions.
+- CDS projection/service exposure through OData V4.
+- Fiori elements List Report/Object Page.
+- Authorization and DCL controls.
 
-- Create a shipment from an approved purchase order.
-- Store only the external order reference, not a duplicate order master.
-- Record tracking events for a shipment.
-- Maintain shipment status and risk level.
-- Create and resolve logistics incidents.
-- Persist AI recommendations linked to incidents.
+ABAP Cloud is the system of record for the purchase order.
+
+### CAP logistics extension
+
+- `Shipments`, `Packages` and `Incidents` entities.
+- External `purchaseOrderId` reference without duplicating the ABAP order master.
+- Virtual package count and total weight calculated after reads.
+- Prevention of duplicate shipments for one purchase order (`409`).
+- Planned-arrival validation (`400`).
+- `markAsDelivered`, `resolveIncident`, `refreshWeather`, `analyzeIncident` and `askAssistant` actions.
+- SAP HANA Cloud persistence in production and SQLite-backed local/test execution.
+
+`TrackingEvents` and persisted `AIRecommendations` were part of the original concept but are not present in the delivered CAP data model. AI analysis is returned as a structured action result rather than stored as a database entity.
 
 ### Integration
 
-- Transfer approved purchase orders from ABAP Cloud to CAP.
-- Transform the core order payload into the logistics payload.
-- Obtain weather data for the relevant route or destination.
-- Route risky weather conditions to incident creation.
-- Record and expose integration errors in a traceable way.
+- Approved purchase orders are transferred from ABAP Cloud through SAP Integration Suite to CAP.
+- The integration maps the order payload to the shipment creation contract.
+- Duplicate protection in CAP makes repeated creation for the same purchase-order ID fail with `409`.
+- Open-Meteo is consumed directly by the CAP `refreshWeather` action; it is not implemented as a separate weather iFlow.
+
+### Weather risk
+
+- Destination city geocoding through Open-Meteo.
+- Daily forecast retrieval for the planned arrival date.
+- Storage of WMO weather code, summary, temperatures, precipitation, wind and check timestamp.
+- Deterministic LOW/MEDIUM/HIGH risk classification.
+
+Weather refresh updates the shipment. Automatic creation of an incident from a weather threshold is not implemented in v1.0.
 
 ### User experience
 
-- Provide a Fiori elements List Report and Object Page for purchase orders.
-- Provide a Fiori elements List Report and Object Page for shipments.
-- Display tracking, incidents and recommendations on the shipment Object Page.
-- Provide a SAPUI5 freestyle AI assistant.
-- Apply role-based access to procurement, logistics and administration functions.
+- Fiori elements purchase-order application over RAP OData V4.
+- Fiori elements logistics List Report/Object Page over the CAP OData service.
+- Shipment and incident operational actions.
+- AI Incident Analyzer action surfaced from the Fiori UI.
+- SAPUI5 dialog extension for shipment-aware assistant conversations.
+- Deployment through HTML5 Application Repository and access from SAP Build Work Zone.
 
-### Artificial intelligence
+The AI Assistant is embedded in the logistics application; there is no separate freestyle application in v1.0.
 
-- Analyze shipment and incident context.
-- Return a structured risk summary, likely impact and recommended action.
-- Persist generated recommendations for auditability.
-- Ground answers using project-owned policies and procedures in the RAG increment.
+### Artificial intelligence and grounding
+
+- SAP AI SDK orchestration configuration for the Incident Analyzer and AI Assistant.
+- Structured JSON-schema output validation.
+- `sap` mode for bound SAP AI Core credentials.
+- Deterministic `mock` mode for local development and automated tests.
+- A real SAP Document Grounding experiment performed with Generative AI Hub Basic Trial.
+- A separate local lexical retriever over three project-owned policies/procedures.
+
+The local retriever scores tokens and headings. It is not vector search, is not SAP Document Grounding and must not be presented as either.
 
 ## Core business states
 
@@ -64,7 +86,7 @@ SmartLogistics BTP gives procurement and logistics teams a shared, traceable flo
 
 `NEW` → `APPROVED` → `IN_PROCESS` → `SHIPPED` → `COMPLETED`
 
-`CANCELLED` is a terminal alternative allowed only by defined transition rules.
+`CANCELLED` is a terminal alternative controlled by the RAP behavior.
 
 ### Shipment
 
@@ -74,16 +96,33 @@ SmartLogistics BTP gives procurement and logistics teams a shared, traceable flo
 - `DELIVERED`
 - `CANCELLED`
 
-### Risk
+### Incident
 
+- `OPEN`
+- `IN_PROGRESS`
+- `RESOLVED`
+- `CLOSED`
+
+### Weather risk
+
+- `UNKNOWN`
 - `LOW`
 - `MEDIUM`
 - `HIGH`
-- `CRITICAL`
 
-## Definition of done for v1.0
+## Verification completed
 
-The project is considered complete when the happy path works end to end, automated tests cover its critical rules, security roles are demonstrated, deployment instructions are reproducible, and the repository contains architecture documentation, screenshots, API examples, and a concise demo script.
+- End-to-end ABAP-to-CAP order integration.
+- CAP/HANA Cloud deployment.
+- Fiori Logistics access through Work Zone.
+- JWT forwarding from Work Zone through Destination service to CAP.
+- Role-based `200`, `401` and `403` responses.
+- Business-rule `400` and duplicate `409` responses.
+- Eight passing automated CAP tests.
+
+## Remaining portfolio work
+
+The product implementation through Phase 13 is complete. Phase 14 still requires curated screenshots, a final visual diagram and a concise demo script/video. Phase 15 covers CV, LinkedIn and interview presentation.
 
 ## Out of scope
 
