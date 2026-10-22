@@ -1,7 +1,7 @@
 using { LogisticsService } from './logistics-service';
 
 annotate LogisticsService with @(
-  requires: 'Viewer'
+  requires: ['Viewer', 'system-user']
 );
 
 annotate LogisticsService.Shipments with @(
@@ -13,6 +13,10 @@ annotate LogisticsService.Shipments with @(
     {
       grant: 'WRITE',
       to: 'Operator'
+    },
+    {
+      grant: 'CREATE',
+      to: 'system-user'
     },
     {
       grant: [
