@@ -2,57 +2,73 @@
 
 > End-to-end SAP Business Technology Platform portfolio project for an agri-food logistics scenario.
 
-[![Status](https://img.shields.io/badge/status-phase%2014%20in%20progress-blue)](#project-status)
+[![Status](https://img.shields.io/badge/status-phase%2014%20complete-brightgreen)](#project-status)
 [![Tests](https://img.shields.io/badge/tests-8%20passing-brightgreen)](cap/smartlogistics-extension/test/logistics-service.test.js)
 [![SAP BTP](https://img.shields.io/badge/SAP-BTP-0A6ED1)](https://www.sap.com/products/technology-platform.html)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
-SmartLogistics BTP demonstrates a clean-core architecture that connects an **ABAP Cloud transactional core** with a **SAP CAP side-by-side logistics extension**. The solution covers purchase orders, shipment operations, weather risk, incident management, generative AI, role-based security and SAP Fiori user experiences.
+SmartLogistics BTP demonstrates a clean-core architecture that connects an **ABAP Cloud transactional core** with a **SAP CAP side-by-side logistics extension**. The solution covers purchase orders, shipment operations, weather risk, incident management, generative AI scenarios, role-based security, enterprise integration, and SAP Fiori user experiences.
 
-The fictional business, **GreenFields Foods**, purchases agricultural products and distributes them between suppliers, warehouses and customers. The scenario connects the author's previous agri-food software experience with a six-certification SAP technology stack.
+The fictional business, **GreenFields Foods**, purchases agricultural products and distributes them between suppliers, warehouses, and customers. The scenario connects the author's previous agri-food software experience with a six-certification SAP technology stack.
+
+## Architecture
+
+![SmartLogistics BTP architecture](docs/architecture/smartlogistics-btp-architecture.png)
+
+The main business integration flow is:
+
+**Purchase Order → SAP Integration Suite → CAP LogisticsService → Shipment**
+
+CAP acts as the logistics application backend: it persists logistics data in SAP HANA Cloud, calls Open-Meteo directly for weather information, exposes OData V4 services to the Fiori application, and provides the application's incident-analysis and grounded-assistance capabilities.
+
+For a guided walkthrough, see the [End-to-End Demo](docs/end-to-end-demo.md).
 
 ## What is implemented
 
-- ABAP Cloud RAP business object for suppliers, products, purchase orders and items.
+- ABAP Cloud RAP business objects for suppliers, products, purchase orders, and purchase-order items.
 - Fiori elements purchase-order application exposed through OData V4.
-- CAP Node.js service for shipments, packages and incidents.
-- SAP HANA Cloud persistence and Cloud Foundry deployment.
+- CAP Node.js `LogisticsService` for shipments, packages, and incidents.
+- SAP HANA Cloud persistence through an HDI container and Cloud Foundry deployment.
 - Published SAP Integration Suite flow from ABAP Cloud to CAP.
-- Direct Open-Meteo geocoding and forecast integration from CAP, with deterministic risk classification.
-- Fiori elements logistics application with shipment and incident actions.
-- Structured AI Incident Analyzer with SAP AI Core mode and a deterministic local fallback.
-- SAPUI5 AI Assistant dialog embedded in the logistics Object Page.
-- Project-owned operational knowledge with a reproducible lexical retriever.
-- XSUAA scopes, role templates and JWT forwarding through SAP Build Work Zone and Destination service.
-- Eight automated CAP tests plus manual API scenarios covering `200`, `401`, `403`, `400` and `409` responses.
+- Technical `system-user` authorization allowing Integration Suite to create shipments without granting interactive application roles.
+- Direct Open-Meteo geocoding and forecast integration from CAP, with deterministic weather-risk classification.
+- Fiori elements logistics application with shipment, weather, incident, and AI actions.
+- SAP Build Work Zone entry point for the logistics application.
+- Structured AI Incident Analyzer with an SAP AI integration path and a deterministic local fallback.
+- SAPUI5 AI Assistant embedded in the logistics Object Page.
+- Project-owned operational knowledge with a reproducible local lexical retriever and source traceability.
+- Separate SAP Document Grounding validation using SAP Generative AI Hub Basic Trial / SAP AI Launchpad.
+- XSUAA scopes, role templates, role collections, destinations, and JWT forwarding.
+- Eight automated CAP tests plus manual API scenarios covering `200`, `401`, `403`, `400`, and `409` responses.
 
 ## End-to-end flow
 
 ```mermaid
-flowchart TD
-    A["Purchase order in ABAP RAP"] --> B["SAP Integration Suite"]
-    B --> C["Shipment in SAP CAP"]
-    C --> D["SAP HANA Cloud"]
-    C --> E["Open-Meteo forecast"]
-    E --> F["Weather risk on shipment"]
-    C --> G["Incident operations"]
-    G --> H["AI incident analysis"]
-    C --> I["Fiori logistics app"]
-    I --> J["SAPUI5 AI Assistant"]
+flowchart LR
+    A["Purchase Order<br/>ABAP Cloud RAP"] --> B["SAP Integration Suite"]
+    B --> C["CAP LogisticsService"]
+    C --> D["Shipment"]
+
+    C --> E["SAP HANA Cloud"]
+    C --> F["Open-Meteo API"]
+    C --> G["AI capabilities"]
+
+    H["SAP Build Work Zone"] --> I["Fiori Logistics"]
+    I --> C
 ```
 
 ## Architecture and ownership
 
 | Layer | Technology | Implemented responsibility |
 |---|---|---|
-| Transactional core | ABAP Cloud, CDS, RAP | Suppliers, products, purchase orders and composed items |
-| Side-by-side extension | SAP CAP, Node.js | Shipments, packages, incidents, rules and actions |
-| Persistence | SAP HANA Cloud | CAP-owned logistics data |
-| Integration | SAP Integration Suite | Approved-order synchronization from ABAP Cloud to CAP |
-| External data | Open-Meteo | Destination geocoding and daily weather forecast consumed by CAP |
-| User experience | Fiori elements, SAPUI5, Work Zone | Procurement and logistics UIs, custom actions and AI dialog |
-| Intelligence | SAP AI Core / Generative AI Hub | Structured incident analysis and conversational shipment assistance |
-| Security | XSUAA, Destination service, JWT | Viewer/Operator/Supervisor roles and end-to-end authenticated access |
+| Transactional core | ABAP Cloud, CDS, RAP | Suppliers, products, purchase orders, composed items, and logistics handoff |
+| Side-by-side extension | SAP CAP, Node.js | Shipments, packages, incidents, business rules, and actions |
+| Persistence | SAP HANA Cloud | CAP-owned logistics data through an HDI container |
+| Integration | SAP Integration Suite | Purchase-order synchronization from ABAP Cloud to CAP |
+| External data | Open-Meteo | Destination geocoding and daily weather forecast consumed directly by CAP |
+| User experience | Fiori elements, SAPUI5, SAP Build Work Zone | Procurement and logistics UIs, custom actions, and AI dialog |
+| Intelligence | Local AI mode + SAP AI integration path | Incident analysis, grounded assistance, and separate SAP Document Grounding validation |
+| Security | XSUAA, Destination service, JWT, Role Collections | Viewer/Operator/Supervisor authorization and authenticated technical integration |
 
 ABAP Cloud remains the system of record for purchase orders. CAP stores the external purchase-order identifier required by the logistics process; it does not duplicate the purchase-order master.
 
@@ -60,9 +76,9 @@ ABAP Cloud remains the system of record for purchase orders. CAP stores the exte
 
 The repository deliberately separates three capabilities:
 
-1. **SAP AI mode** — the Incident Analyzer and AI Assistant use SAP AI SDK orchestration when `SMARTLOGISTICS_AI_MODE=sap` and an SAP AI Core binding is available.
-2. **Local fallback** — the default development mode returns deterministic responses so the project and tests remain reproducible without cloud AI credentials.
-3. **Grounding evidence** — SAP Document Grounding was tested separately with SAP Generative AI Hub Basic Trial. The application repository also contains a local, keyword-weighted lexical retriever over three project-owned Markdown documents. That local retriever is **not vector RAG and is not SAP Document Grounding**.
+1. **SAP AI mode** — the Incident Analyzer and AI Assistant contain an SAP AI integration path used when `SMARTLOGISTICS_AI_MODE=sap` and the required SAP AI service binding is available.
+2. **Local reproducible mode** — the development and test environment can return deterministic responses so the project remains reproducible without cloud AI credentials.
+3. **Grounding evidence** — SAP Document Grounding was validated separately with SAP Generative AI Hub Basic Trial / SAP AI Launchpad. The application repository also contains a local, keyword-weighted lexical retriever over three project-owned Markdown documents. The local retriever is **not vector RAG and is not SAP Document Grounding**.
 
 The three local knowledge documents are:
 
@@ -74,13 +90,18 @@ See [AI prompts](ai/prompts/README.md) and [grounding notes](ai/rag/README.md) f
 
 ## Security model
 
-| Role | Effective access in the current CAP service |
+| Identity / Role | Effective access |
 |---|---|
-| `Viewer` | Read shipments, packages and incidents |
+| `Viewer` | Read shipments, packages, and incidents |
 | `Operator` | Viewer access plus writes and operational/AI actions |
 | `Supervisor` | Cumulative Viewer and Operator scopes; reserved for privileged extensions |
+| `system-user` | Technical identity restricted to creating `Shipments` for the Integration Suite flow |
 
-The BTP role collections are `SmartLogistics_Viewer`, `SmartLogistics_Operator` and `SmartLogistics_Supervisor`. Production uses XSUAA. Local development uses named mock users defined in `package.json`; those test passwords are not production credentials.
+The BTP role collections are `SmartLogistics_Viewer`, `SmartLogistics_Operator`, and `SmartLogistics_Supervisor`.
+
+Production uses XSUAA and role-based authorization. SAP Integration Suite authenticates to CAP using a technical client that CAP recognizes as `system-user`. This identity is granted only the authorization required to create shipments.
+
+Local development uses named mock users defined in `package.json`; those test passwords are development-only credentials.
 
 ## Automated verification
 
@@ -105,6 +126,22 @@ npm test
 
 Manual API examples are available in [`test.http`](cap/smartlogistics-extension/test.http).
 
+## Portfolio evidence
+
+| Area | Evidence |
+|---|---|
+| Architecture | [Final architecture diagram](docs/architecture/smartlogistics-btp-architecture.png) |
+| ABAP Cloud / RAP | [Purchase Orders](docs/screenshots/abap-rap/) |
+| Integration Suite | [ABAP-to-CAP integration](docs/screenshots/integration-suite/) |
+| Fiori Logistics | [Shipment Object Page](docs/screenshots/fiori-logistics/) |
+| Open-Meteo | [Weather before/after refresh](docs/screenshots/weather/) |
+| AI | [Incident Analyzer, AI Assistant and SAP Document Grounding](docs/screenshots/ai/) |
+| Security | [Role Collections and XSUAA authorization](docs/screenshots/security/) |
+| Testing | [Automated and manual authorization tests](docs/screenshots/testing/) |
+| Demo | [End-to-End Demo](docs/end-to-end-demo.md) |
+
+See the [portfolio screenshots guide](docs/screenshots/README.md) for the curated evidence set.
+
 ## Repository structure
 
 ```text
@@ -113,8 +150,13 @@ smartlogistics-btp/
 ├── cap/smartlogistics-extension/ # Deployable CAP, Fiori and AI implementation
 ├── fiori/                        # Portfolio documentation for the UIs
 ├── integration/                  # Integration Suite documentation
-├── ai/                           # Prompt and grounding documentation
-├── docs/                         # Scope, architecture, roadmap and evidence
+├── ai/                           # AI prompts, knowledge and grounding documentation
+├── docs/
+│   ├── architecture/             # Solution documentation and final architecture visual
+│   ├── screenshots/              # Curated portfolio evidence
+│   ├── end-to-end-demo.md        # Guided project walkthrough
+│   ├── roadmap.md
+│   └── project-scope.md
 ├── postman/                      # API testing notes
 └── README.md
 ```
@@ -123,6 +165,9 @@ smartlogistics-btp/
 
 - [Project scope and delivered capabilities](docs/project-scope.md)
 - [Solution architecture](docs/architecture/solution-architecture.md)
+- [Final architecture diagram](docs/architecture/smartlogistics-btp-architecture.png)
+- [End-to-End Demo](docs/end-to-end-demo.md)
+- [Portfolio screenshots](docs/screenshots/README.md)
 - [Architecture boundary decision](docs/decisions/ADR-001-system-boundaries.md)
 - [Implementation roadmap](docs/roadmap.md)
 - [Backlog](docs/backlog.md)
@@ -132,18 +177,22 @@ smartlogistics-btp/
 
 ## Project status
 
-Phases **0–13 are complete**. **Phase 14 — Portfolio is in progress**: the repository documentation now describes the implementation, while curated screenshots, the final architecture visual and a short demo video/script remain to be added. Phase 15 will turn the verified evidence into CV and LinkedIn material.
+Phases **0–14 are complete**.
+
+**Phase 14 — Portfolio** delivers the public implementation, curated technical documentation, architecture diagram, visual evidence, security and testing proof, and an end-to-end demo guide.
+
+**Phase 15 — Presentation / CV / LinkedIn** is the next step and will turn the verified project evidence into portfolio presentation material and professional-profile content.
 
 ## SAP certification coverage
 
 | Certification | Evidence in SmartLogistics |
 |---|---|
-| C_ABAPD | CDS, managed RAP, draft, validations, determinations, actions, DCL and OData V4 |
-| C_CPE | CAP Node.js, CDS, custom handlers/actions, HANA Cloud and Cloud Foundry |
-| C_CPI | Published ABAP-to-CAP integration flow and API transformation |
-| C_AIG | SAP AI SDK orchestration, structured outputs, Document Grounding trial and local lexical grounding fallback |
-| C_ADBTP | Subaccount/services, Cloud Foundry, destinations, XSUAA, role collections and trust/JWT flow |
-| C_FIORD | Fiori elements, OData annotations, SAPUI5 extensions and Work Zone integration |
+| C_ABAPD | ABAP Cloud, CDS, managed RAP, compositions, actions, behavior definitions, and OData V4 |
+| C_CPE | CAP Node.js, CDS, custom handlers/actions, SAP HANA Cloud, and Cloud Foundry |
+| C_CPI | Published ABAP-to-CAP integration flow, payload mapping, and API integration |
+| C_AIG | Structured AI scenarios, SAP AI integration path, separate SAP Document Grounding validation, and local grounded fallback |
+| C_ADBTP | BTP services, Cloud Foundry, destinations, XSUAA, role collections, identity trust, and authorization |
+| C_FIORD | Fiori elements, OData annotations, SAPUI5 extensions, and SAP Build Work Zone integration |
 
 ## License
 
