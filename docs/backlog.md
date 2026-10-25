@@ -9,12 +9,12 @@ Priority uses `P0` for the end-to-end path, `P1` for portfolio quality and `P2` 
 | SL-020 | P0 | Suppliers and products | ✅ | ABAP RAP master data |
 | SL-021 | P0 | Purchase order with items | ✅ | Draft composition and persistence |
 | SL-022 | P0 | Monetary calculations | ✅ | Item and header totals |
-| SL-023 | P0 | Order lifecycle | ✅ | Approve/cancel actions and state rules |
-| SL-024 | P1 | Procurement authorization | ✅ | DCL/authorization behavior |
+| SL-023 | P0 | Order status and logistics handoff | ✅ | Initial `NW` status plus logistics state transition from `NEW` to `SENT` |
+| SL-024 | P1 | Procurement authorization hardening | ◐ | RAP authorization hooks exist; custom DCL/instance rules are not implemented in v1.0 |
 | SL-030 | P0 | Fiori purchase-order app | ✅ | List Report/Object Page over RAP |
 | SL-040 | P0 | CAP logistics service | ✅ | Shipment, package and incident APIs/actions |
 | SL-050 | P0 | HANA Cloud persistence | ✅ | HDI-backed deployment |
-| SL-060 | P0 | Approved-order synchronization | ✅ | Published ABAP-to-CAP Integration Suite flow |
+| SL-060 | P0 | Purchase-order synchronization | ✅ | Published `Send to Logistics` ABAP-to-CAP Integration Suite flow |
 | SL-061 | P1 | Integration observability/retry | ◐ | Message-processing evidence captured; automated retry/dead-letter handling remains a future enhancement |
 | SL-070 | P0 | Weather risk | ✅ | Direct CAP/Open-Meteo integration and deterministic classification |
 | SL-080 | P0 | Fiori Logistics | ✅ | Logistics UI deployed and exposed through Work Zone |

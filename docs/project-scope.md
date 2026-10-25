@@ -8,7 +8,7 @@ SmartLogistics BTP gives procurement and logistics teams a traceable flow from p
 
 | Actor | Responsibilities | Implemented access |
 |---|---|---|
-| Procurement Manager | Maintain master data and manage purchase orders | ABAP RAP authorization/DCL and procurement UI |
+| Procurement Manager | Maintain procurement data and manage purchase orders | ABAP RAP purchase-order UI, draft handling and behavior validations |
 | Logistics Viewer | Monitor shipments, packages, incidents and weather risk | `SmartLogistics_Viewer` |
 | Logistics Operator | Update logistics data and execute operational/AI actions | `SmartLogistics_Operator` |
 | Logistics Supervisor | Cumulative access and future privileged operations | `SmartLogistics_Supervisor` |
@@ -22,11 +22,9 @@ The current CAP service has Viewer and Operator enforcement. Supervisor is defin
 
 - Supplier and product master data.
 - Managed RAP purchase-order business object with composed items and draft handling.
-- Initial status, monetary calculations and business validations.
-- Approve and cancel lifecycle actions.
-- CDS projection/service exposure through OData V4.
+- Initial business/logistics status, monetary calculations and business validations.
+- `Send to Logistics` action plus CDS projection/service exposure through OData V4.
 - Fiori elements List Report/Object Page.
-- Authorization and DCL controls.
 
 ABAP Cloud is the system of record for the purchase order.
 
@@ -44,7 +42,7 @@ ABAP Cloud is the system of record for the purchase order.
 
 ### Integration
 
-- Approved purchase orders are transferred from ABAP Cloud through SAP Integration Suite to CAP.
+- Purchase orders are transferred from ABAP Cloud through SAP Integration Suite to CAP when **Send to Logistics** is executed.
 - The integration maps the order payload to the shipment creation contract.
 - Duplicate protection in CAP makes repeated creation for the same purchase-order ID fail with `409`.
 - Open-Meteo is consumed directly by the CAP `refreshWeather` action; it is not implemented as a separate weather iFlow.
@@ -84,9 +82,10 @@ The local retriever scores tokens and headings. It is not vector search, is not 
 
 ### Purchase order
 
-`NEW` → `APPROVED` → `IN_PROCESS` → `SHIPPED` → `COMPLETED`
+- Business status: `NW` (`New`) in the delivered v1.0 behavior.
+- Logistics integration status: `NEW` → `SENT` after a successful **Send to Logistics** action.
 
-`CANCELLED` is a terminal alternative controlled by the RAP behavior.
+Separate Approve/Cancel business-state actions are not implemented in v1.0.
 
 ### Shipment
 

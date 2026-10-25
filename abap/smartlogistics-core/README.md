@@ -11,12 +11,14 @@ The public portfolio intentionally documents the ABAP implementation rather than
 - Purchase orders
 - Composed purchase-order items
 - Draft-enabled create/edit flow
-- Initial status and monetary calculations
+- Initial purchase-order and logistics-integration status, plus monetary calculations
 - Supplier, product, quantity and date validations
-- Approve/cancel lifecycle actions
-- Send-to-logistics integration action
-- Authorization/DCL
+- `Send to Logistics` integration action, with logistics status changing from `NEW` to `SENT` after a successful handoff
 - OData V4 exposure and Fiori elements preview
+
+Supplier and product data are supporting persistence/CDS master data in v1.0. The managed RAP business object is the purchase order with its composed items.
+
+Custom procurement DCL/instance-authorization rules are not part of the delivered v1.0 implementation; the RAP authorization hooks are present but contain no custom enforcement.
 
 ## Main object families
 

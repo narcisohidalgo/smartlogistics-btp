@@ -25,7 +25,7 @@ For a guided walkthrough, see the [End-to-End Demo](docs/end-to-end-demo.md).
 
 ## What is implemented
 
-- ABAP Cloud RAP business objects for suppliers, products, purchase orders, and purchase-order items.
+- ABAP Cloud persistence and CDS views for supplier/product master data, plus a managed RAP purchase-order business object with composed items and draft handling.
 - Fiori elements purchase-order application exposed through OData V4.
 - CAP Node.js `LogisticsService` for shipments, packages, and incidents.
 - SAP HANA Cloud persistence through an HDI container and Cloud Foundry deployment.

@@ -33,7 +33,7 @@ The same master entity is not independently writable in ABAP Cloud and CAP. CAP 
 
 ## Implemented integration paths
 
-### Approved order: ABAP Cloud → Integration Suite → CAP
+### Purchase-order handoff: ABAP Cloud → Integration Suite → CAP
 
 1. The purchase-order application executes **Send to Logistics**.
 2. The published `ABAP PO to CAP Shipment` iFlow receives and transforms the purchase-order payload.
@@ -62,7 +62,7 @@ Open-Meteo is called directly by CAP. There is no separate weather iFlow in the 
 
 ## Security model
 
-- ABAP DCL and RAP controls protect procurement data and actions.
+- ABAP RAP behavior validations protect procurement data quality. Custom procurement DCL/instance-authorization rules are not part of the delivered v1.0 evidence.
 - XSUAA defines `Viewer`, `Operator` and `Supervisor` scopes and role templates.
 - BTP role collections map business users to those application roles.
 - CAP `@requires` and `@restrict` rules protect entities and bound actions.

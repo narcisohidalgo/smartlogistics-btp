@@ -4,7 +4,7 @@
 
 - Repository and folders: lowercase kebab-case.
 - Business entities: singular PascalCase (`PurchaseOrder`).
-- Service operations: lower camelCase (`approve`, `analyzeIncident`).
+- Service operations: lower camelCase (`sendToLogistics`, `analyzeIncident`).
 - Environment-specific values must be externalized.
 - Secrets, service keys and credentials must never be committed.
 

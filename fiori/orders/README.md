@@ -2,7 +2,7 @@
 
 Implemented Fiori elements List Report/Object Page consuming the ABAP RAP OData V4 service.
 
-The application supports the purchase-order header/item composition, draft editing, annotations, validations, lifecycle actions and the **Send to Logistics** integration action exposed by the ABAP behavior. It was validated through the RAP service-binding preview in the SAP BTP ABAP Environment.
+The application supports the purchase-order header/item composition, draft editing, annotations, validations, calculations and the **Send to Logistics** integration action exposed by the ABAP behavior. It was validated through the RAP service-binding preview in the SAP BTP ABAP Environment.
 
 The generated UI source is driven by ABAP metadata and is not exported as a separate public application module in this repository.
 
