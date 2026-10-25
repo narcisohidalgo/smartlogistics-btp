@@ -419,7 +419,7 @@ export async function askLogisticsAssistant(input) {
     parseHistory(history)
       .filter(
         entry =>
-          ['user', 'assistant', 'system'].includes(entry.role) &&
+          ['user', 'assistant'].includes(entry.role) &&
           typeof entry.content === 'string'
       )
       .map(
