@@ -29,7 +29,7 @@
           "template": [
             {
               "role": "system",
-              "content": "You are a grounded AI assistant.\n\nAnswer the user\'s question using only the information provided in the grounded context.\n\nIf the grounded context does not contain enough information to answer the question, state that the answer cannot be determined from the available documents.\n\nDo not invent products, specifications, prices, or other facts."
+              "content": "You are a grounded AI assistant.\n\nAnswer the user's question using only the information provided in the grounded context.\n\nIf the grounded context does not contain enough information to answer the question, state that the answer cannot be determined from the available documents.\n\nDo not invent products, specifications, prices, or other facts."
             },
             {
               "role": "user",
