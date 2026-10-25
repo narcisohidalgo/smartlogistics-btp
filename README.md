@@ -3,7 +3,7 @@
 > End-to-end SAP Business Technology Platform portfolio project for an agri-food logistics scenario.
 
 [![Status](https://img.shields.io/badge/status-phase%2014%20complete-brightgreen)](#project-status)
-[![CAP Tests](https://github.com/narcisohidalgo/smartlogistics-btp/actions/workflows/cap-tests.yml/badge.svg)](https://github.com/narcisohidalgo/smartlogistics-btp/actions/workflows/cap-tests.yml)
+[![Tests](https://img.shields.io/badge/tests-8%20passing-brightgreen)](cap/smartlogistics-extension/test/logistics-service.test.js)
 [![SAP BTP](https://img.shields.io/badge/SAP-BTP-0A6ED1)](https://www.sap.com/products/technology-platform.html)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
@@ -105,7 +105,7 @@ Local development uses named mock users defined in `package.json`; those test pa
 
 ## Automated verification
 
-The CAP test suite uses `@cap-js/cds-test`. The latest validated result is **8 passing tests**. GitHub Actions runs the suite automatically for CAP changes on pushes to `main` and pull requests:
+The CAP test suite uses `@cap-js/cds-test`. The latest validated result is **8 passing tests**. A GitHub Actions workflow is configured to run the suite automatically for CAP changes on pushes to `main` and pull requests:
 
 - Viewer reads shipments.
 - Viewer receives `403` for the AI Assistant.
