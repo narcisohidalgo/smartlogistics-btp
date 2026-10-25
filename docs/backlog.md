@@ -6,7 +6,7 @@ Priority uses `P0` for the end-to-end path, `P1` for portfolio quality and `P2` 
 |---|---|---|:---:|---|
 | SL-001 | P0 | Project foundation | ✅ | Scope, architecture, ADR, roadmap and conventions |
 | SL-010 | P0 | SAP BTP landscape | ✅ | BTP services plus BAS, ADT and CF access verified |
-| SL-020 | P0 | Suppliers and products | ✅ | ABAP RAP master data |
+| SL-020 | P0 | Suppliers and products | ✅ | ABAP persistence tables and CDS master-data views |
 | SL-021 | P0 | Purchase order with items | ✅ | Draft composition and persistence |
 | SL-022 | P0 | Monetary calculations | ✅ | Item and header totals |
 | SL-023 | P0 | Order status and logistics handoff | ✅ | Initial `NW` status plus logistics state transition from `NEW` to `SENT` |
@@ -26,4 +26,4 @@ Priority uses `P0` for the end-to-end path, `P1` for portfolio quality and `P2` 
 | SL-140 | P1 | Portfolio evidence | ✅ | Architecture, 18 curated screenshots, demo guide and final documentation audit completed |
 | SL-150 | P1 | CV and LinkedIn presentation | ⏳ | Starts after the audited portfolio repository is finalized |
 
-Legend: ✅ complete · ◐ partially implemented/evidenced · ▶ in progress · ⏳ not started.
+Legend: ✅ complete · ◐ non-blocking future hardening / partially implemented · ▶ in progress · ⏳ not started.

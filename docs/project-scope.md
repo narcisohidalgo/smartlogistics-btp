@@ -2,13 +2,13 @@
 
 ## Product vision
 
-SmartLogistics BTP gives procurement and logistics teams a traceable flow from purchase-order approval to shipment monitoring and incident response. It uses the fictional agri-food company GreenFields Foods to connect the solution with realistic supply-chain concerns.
+SmartLogistics BTP gives procurement and logistics teams a traceable flow from purchase-order creation and logistics handoff to shipment monitoring and incident response. It uses the fictional agri-food company GreenFields Foods to connect the solution with realistic supply-chain concerns.
 
 ## Actors and authorization
 
 | Actor | Responsibilities | Implemented access |
 |---|---|---|
-| Procurement Manager | Maintain procurement data and manage purchase orders | ABAP RAP purchase-order UI, draft handling and behavior validations |
+| Procurement Manager | Create/edit purchase orders and trigger the logistics handoff | ABAP RAP purchase-order UI, draft handling and behavior validations |
 | Logistics Viewer | Monitor shipments, packages, incidents and weather risk | `SmartLogistics_Viewer` |
 | Logistics Operator | Update logistics data and execute operational/AI actions | `SmartLogistics_Operator` |
 | Logistics Supervisor | Cumulative access and future privileged operations | `SmartLogistics_Supervisor` |

@@ -20,7 +20,8 @@ The project prefix is `ZSL`.
 | CDS projection view | `ZC_SL_*` | `ZC_SL_PURCHASEORDER` |
 | Behavior pool | `ZBP_I_SL_*` | `ZBP_I_SL_PURCHASEORDER` |
 | Service definition | `ZUI_SL_*` | `ZUI_SL_PURCHASEORDER` |
-| DCL role | `ZR_SL_*` | `ZR_SL_PURCHASEORDER` |
+
+No custom SmartLogistics DCL role is delivered in v1.0.
 
 ## CAP and APIs
 
