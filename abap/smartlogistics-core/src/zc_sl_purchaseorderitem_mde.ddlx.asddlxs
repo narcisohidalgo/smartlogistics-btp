@@ -1,0 +1,22 @@
+@Metadata.layer: #CORE
+
+@UI.presentationVariant: [
+  {
+    sortOrder: [
+      {
+        by: 'ItemNumber',
+        direction: #ASC
+      }
+    ],
+    visualizations: [
+      {
+        type: #AS_LINEITEM
+      }
+    ]
+  }
+]
+
+annotate entity ZC_SL_PURCHASEORDERITEM
+  with
+{
+}

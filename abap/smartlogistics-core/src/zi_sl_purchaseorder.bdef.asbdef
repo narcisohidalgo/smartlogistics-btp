@@ -1,0 +1,153 @@
+managed implementation in class zbp_i_sl_purchaseorder unique;
+strict ( 2 );
+with draft;
+
+define behavior for ZI_SL_PURCHASEORDER alias PurchaseOrder
+persistent table zsl_po
+draft table zsl_po_d
+lock master
+total etag LastChangedAt
+authorization master ( instance )
+etag master LocalLastChangedAt
+{
+  create ( authorization : global );
+  update;
+  delete;
+
+  field ( readonly, numbering : managed )
+  PurchaseOrderUuid;
+
+  field ( mandatory )
+  SupplierUuid,
+  OrderDate,
+  DeliveryDate;
+
+  field ( readonly )
+  PurchaseOrderId,
+  Status,
+  TotalAmount,
+  LogisticsStatus,
+  CreatedBy,
+  CreatedAt,
+  LocalLastChangedBy,
+  LocalLastChangedAt,
+  LastChangedAt;
+
+  determination setInitialStatus on modify { create; }
+
+  determination setPurchaseOrderId on modify
+  { create; }
+
+  validation validateSupplier on save
+  { create; field SupplierUuid; }
+
+  validation validateDates on save
+  { create; field OrderDate, DeliveryDate; }
+
+  internal action recalculateTotalAmount;
+
+  action ( features : instance ) sendToLogistics;
+
+  association _Items { create; with draft; }
+
+  draft action Edit;
+  draft action Activate optimized;
+  draft action Discard;
+  draft action Resume;
+
+  draft determine action Prepare
+  {
+    validation validateSupplier;
+    validation validateDates;
+    validation PurchaseOrderItem~validateProduct;
+    validation PurchaseOrderItem~validateQuantity;
+    validation PurchaseOrderItem~validateUnitPrice;
+  }
+
+  mapping for zsl_po
+    {
+      PurchaseOrderUuid  = purchase_order_uuid;
+      PurchaseOrderId    = purchase_order_id;
+      SupplierUuid       = supplier_uuid;
+      OrderDate          = order_date;
+      DeliveryDate       = delivery_date;
+      Status             = status;
+      TotalAmount        = total_amount;
+      CurrencyCode       = currency_code;
+      CreatedBy          = created_by;
+      CreatedAt          = created_at;
+      LocalLastChangedBy = local_last_changed_by;
+      LocalLastChangedAt = local_last_changed_at;
+      LastChangedAt      = last_changed_at;
+      LogisticsStatus    = logistics_status;
+    }
+}
+
+define behavior for ZI_SL_PURCHASEORDERITEM alias PurchaseOrderItem
+persistent table zsl_po_item
+draft table zsl_po_item_d
+lock dependent by _PurchaseOrder
+authorization dependent by _PurchaseOrder
+etag master LocalLastChangedAt
+{
+  update;
+  delete;
+
+  field ( readonly, numbering : managed )
+  ItemUuid;
+
+  field ( readonly : update )
+  PurchaseOrderUuid;
+
+  field ( mandatory )
+  ProductUuid,
+  Quantity,
+  UnitPrice;
+
+  field ( readonly )
+  ItemNumber,
+  NetAmount,
+  CreatedBy,
+  CreatedAt,
+  LocalLastChangedBy,
+  LocalLastChangedAt,
+  LastChangedAt;
+
+  determination setItemNumber on modify
+  { create; }
+
+  determination calculateNetAmount on modify
+  { create; field Quantity, UnitPrice; }
+
+  determination updateTotalAmount on modify
+  { create; delete; field NetAmount; }
+
+  validation validateProduct on save
+  { create; field ProductUuid; }
+
+  validation validateQuantity on save
+  { create; field Quantity; }
+
+  validation validateUnitPrice on save
+  { create; field UnitPrice; }
+
+  association _PurchaseOrder { with draft; }
+
+  mapping for zsl_po_item
+    {
+      ItemUuid           = item_uuid;
+      PurchaseOrderUuid  = purchase_order_uuid;
+      ItemNumber         = item_number;
+      ProductUuid        = product_uuid;
+      Quantity           = quantity;
+      UnitOfMeasure      = unit_of_measure;
+      UnitPrice          = unit_price;
+      NetAmount          = net_amount;
+      CurrencyCode       = currency_code;
+      CreatedBy          = created_by;
+      CreatedAt          = created_at;
+      LocalLastChangedBy = local_last_changed_by;
+      LocalLastChangedAt = local_last_changed_at;
+      LastChangedAt      = last_changed_at;
+    }
+}

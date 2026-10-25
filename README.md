@@ -103,6 +103,15 @@ Production uses XSUAA and role-based authorization. SAP Integration Suite authen
 
 Local development uses named mock users defined in `package.json`; those test passwords are development-only credentials.
 
+## Source code and reproducibility
+
+Both the **Eclipse ADT ABAP Cloud source** and the **SAP Business Application Studio CAP/Fiori source** are now included in this public repository:
+
+- **ABAP Cloud/RAP:** [`abap/smartlogistics-core/src/`](abap/smartlogistics-core/src/) contains the exported tables, CDS entities, behavior definitions, behavior implementation, classes, communication objects and OData service artifacts. The root [`.abapgit.xml`](.abapgit.xml) points to that subtree for abapGit import into a compatible SAP BTP ABAP Environment. See the [ABAP import and security guide](abap/smartlogistics-core/README.md).
+- **CAP/Fiori:** [`cap/smartlogistics-extension/`](cap/smartlogistics-extension/) contains the runnable CAP service, CDS persistence, Fiori Logistics app and automated tests.
+
+**Cloning the Git repository obtains the source code, not an automatically configured SAP landscape.** Importing/activating ABAP objects requires SAP BTP ABAP Environment and Eclipse ADT; full deployment also requires HANA Cloud, XSUAA, destinations, Integration Suite configuration and appropriate credentials. The Integration Suite iFlow export and a standalone Fiori Orders UI module are not included. Environment-specific values and generated keys in the ABAP export have intentionally been replaced with non-operational placeholders.
+
 ## Automated verification
 
 The CAP test suite uses `@cap-js/cds-test`. GitHub Actions runs the suite automatically for CAP changes on pushes to `main` and pull requests. The validated result is **8 passing tests**:
@@ -146,7 +155,8 @@ See the [portfolio screenshots guide](docs/screenshots/README.md) for the curate
 
 ```text
 smartlogistics-btp/
-├── abap/                         # ABAP Cloud/RAP implementation notes
+├── .abapgit.xml                  # abapGit configuration for ADT import
+├── abap/smartlogistics-core/src/ # ABAP Cloud CDS, RAP, tables, classes, OData
 ├── cap/smartlogistics-extension/ # Deployable CAP, Fiori and AI implementation
 ├── fiori/                        # Portfolio documentation for the UIs
 ├── integration/                  # Integration Suite documentation
@@ -171,6 +181,7 @@ smartlogistics-btp/
 - [Architecture boundary decision](docs/decisions/ADR-001-system-boundaries.md)
 - [Implementation roadmap](docs/roadmap.md)
 - [Backlog](docs/backlog.md)
+- [ABAP core source and import guide](abap/smartlogistics-core/README.md)
 - [CAP extension](cap/smartlogistics-extension/README.md)
 - [Fiori logistics app](fiori/shipments/README.md)
 - [AI Assistant](fiori/ai-assistant/README.md)

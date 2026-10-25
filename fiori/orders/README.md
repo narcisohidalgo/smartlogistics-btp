@@ -4,7 +4,7 @@ Implemented Fiori elements List Report/Object Page consuming the ABAP RAP OData 
 
 The application supports the purchase-order header/item composition, draft editing, annotations, validations, calculations and the **Send to Logistics** integration action exposed by the ABAP behavior. It was validated through the RAP service-binding preview in the SAP BTP ABAP Environment.
 
-The generated UI source is driven by ABAP metadata and is not exported as a separate public application module in this repository.
+The UI is generated from the RAP service and annotations. Its ABAP CDS, metadata extensions, behaviors and OData service sources are now published under [ABAP Cloud source](../../abap/smartlogistics-core/src/). The Fiori Orders UI itself is not exported as a standalone UI5 application module.
 
 ## Portfolio evidence
 

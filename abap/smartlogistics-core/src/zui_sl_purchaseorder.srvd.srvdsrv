@@ -1,0 +1,5 @@
+@EndUserText.label: 'SmartLogistics Purchase Order Service'
+define service ZUI_SL_PURCHASEORDER {
+  expose ZC_SL_PURCHASEORDER     as PurchaseOrders;
+  expose ZC_SL_PURCHASEORDERITEM as PurchaseOrderItems;
+}

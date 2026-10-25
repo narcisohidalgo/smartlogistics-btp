@@ -121,7 +121,7 @@ Separate Approve/Cancel business-state actions are not implemented in v1.0.
 
 ## Portfolio status
 
-Implementation phases **0–14 are complete**. The public portfolio now includes curated screenshots, the final architecture visual, security/testing evidence and an end-to-end demo guide.
+Implementation phases **0–14 are complete**. The public portfolio now includes sanitized ABAP Cloud/ADT source alongside CAP/Fiori source, curated screenshots, the final architecture visual, security/testing evidence and an end-to-end demo guide. Importing the ABAP objects and configuring BTP services is required to reproduce the deployed solution.
 
 Phase 15 covers CV, LinkedIn, recruiter outreach and interview/demo presentation material.
 

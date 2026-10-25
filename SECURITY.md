@@ -19,3 +19,8 @@ CI runs `npm audit --omit=dev` as an informational production-dependency check.
 The directly fixable `body-parser` advisory is addressed by the committed lockfile. The remaining production audit finding is the `node-forge` advisory inherited transitively through `jks-js`, SAP Cloud SDK connectivity and the SAP AI SDK dependency chain. The upstream advisory currently provides no patched `node-forge` release.
 
 The repository intentionally does not use `npm audit fix --force` because npm proposes a breaking SAP AI SDK change rather than a safe patched dependency chain. This dependency should be updated when the upstream SAP/Node dependency chain exposes a patched version.
+
+## Public ABAP source
+
+The ADT/abapGit source published in `abap/smartlogistics-core/src/` is a sanitized portfolio snapshot. The OAuth token URL, integration endpoint, client ID and client secret from the original export were replaced with non-operational sample values in `ZCL_SL_INTEGRATION_CLIENT`. A generated communication-target key was replaced with `0` in `ZSL_INT_TARGET`. **Neither file is ready for production integration as-is.** Re-create the generated communication target and configure approved authentication with SAP Communication Management/secure destinations. Do not replace placeholders by committing real credentials to this repository.
+

@@ -1,0 +1,17 @@
+{
+  "formatVersion": "1",
+  "header": {
+    "description": "SmartLogistics Integration Suite Target",
+    "originalLanguage": "en",
+    "abapLanguageVersion": "cloudDevelopment"
+  },
+  "configuration": {
+    "communicationTargetClass": "ZSL_INT_TARGET",
+    "allowMultipleDestinations": true
+  },
+  "httpSettings": {
+    "pathPrefix": "/http/smartlogistics/purchaseorders"
+  },
+  "rfcSettings": {},
+  "apcSettings": {}
+}

@@ -1,0 +1,34 @@
+{
+  "formatVersion": "2",
+  "header": {
+    "description": "SmartLogistics Fiori Orders",
+    "originalLanguage": "en",
+    "abapLanguageVersion": "cloudDevelopment"
+  },
+  "generalInformation": {
+    "appType": "ui5",
+    "catalogId": "SAP_TC_UI5_REPO_UIAD",
+    "targetMappingTitle": "SmartLogistics Purchase Orders"
+  },
+  "ui5AppDetails": {
+    "appId": "smartlogisticsorders"
+  },
+  "navigation": {
+    "targetMappingId": "ZSL_FIORI_ORD_UI5R_TM",
+    "semanticObject": "SmartLogisticsOrder",
+    "action": "manage",
+    "desktop": true,
+    "tablet": true,
+    "phone": true
+  },
+  "tiles": [
+    {
+      "id": "ZSL_FIORI_ORD_UI5R_AL",
+      "tileType": "static",
+      "isDefault": true,
+      "standard": {
+        "title": "SmartLogistics Purchase Orders"
+      }
+    }
+  ]
+}

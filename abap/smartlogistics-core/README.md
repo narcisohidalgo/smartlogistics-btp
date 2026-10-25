@@ -1,36 +1,40 @@
-# SmartLogistics ABAP Core
+# SmartLogistics ABAP Cloud / RAP — Eclipse ADT sources
 
-The ABAP Cloud core is the system of record for procurement. It was implemented and validated in the SAP BTP ABAP Environment.
+This folder contains the ABAP Cloud objects exported from the `ZSMARTLOGISTICS` package in Eclipse ABAP Development Tools (ADT) in **abapGit serialization format**. They complement the CAP and SAPUI5 sources in the same public repository.
 
-The public portfolio intentionally documents the ABAP implementation rather than publishing environment-specific ABAP source artifacts. Curated screenshots provide verifiable evidence of the RAP application and service binding.
+## Included source
 
-## Implemented business scope
+- Database tables for suppliers, products, purchase-order header/items and RAP draft persistence (`ZSL_*`).
+- Interface and projection CDS view entities (`ZI_SL_*`, `ZC_SL_*`) and UI metadata extensions.
+- Managed RAP behaviors with draft, validations, determinations, composed items and the `sendToLogistics` action (`ZBP_I_SL_PURCHASEORDER`).
+- Supporting ABAP classes, including sample data, number-range initialization and Integration Suite connectivity.
+- Service definition, OData V4 service binding, number-range/data-element/domain, communication and UI registration metadata.
 
-- Suppliers
-- Products
-- Purchase orders
-- Composed purchase-order items
-- Draft-enabled create/edit flow
-- Initial purchase-order and logistics-integration status, plus monetary calculations
-- Supplier, product, quantity and date validations
-- `Send to Logistics` integration action, with logistics status changing from `NEW` to `SENT` after a successful handoff
-- OData V4 exposure and Fiori elements preview
+## Clone and import into ABAP Environment
 
-Supplier and product data are supporting persistence/CDS master data in v1.0. The managed RAP business object is the purchase order with its composed items.
+1. Clone `https://github.com/narcisohidalgo/smartlogistics-btp.git` to inspect both ABAP and CAP code.
+2. To import ABAP, prepare an **SAP BTP ABAP Environment** and Eclipse **ABAP Development Tools** with the abapGit Repositories integration. Create/select an appropriate ABAP development package (the original root package was `ZSMARTLOGISTICS`) and transport request as required.
+3. In Eclipse ADT, open **abapGit Repositories**, choose the clone/import action, provide the repository URL, select the `main` branch and your target package.
+4. The root `.abapgit.xml` specifies `STARTING_FOLDER=/abap/smartlogistics-core/src/` with folder logic `FULL`, so only the serialized ABAP objects in this subtree are intended for import. If your ADT/abapGit version cannot import from this nested folder, use an abapGit-compatible root-only export of this folder rather than importing the CAP modules as ABAP objects.
+5. Activate the supported development objects in the target system, configure service binding/authorizations and initialize test/master data as appropriate. Actual import/activation in a separate environment is **not** verified by GitHub Actions.
 
-Custom procurement DCL/instance-authorization rules are not part of the delivered v1.0 implementation; the RAP authorization hooks are present but contain no custom enforcement.
+## Redacted integration settings — important
 
-## Main object families
+The public snapshot deliberately does **not** expose the original OAuth client credentials or tenant endpoints.
 
-- Persistence tables with the `ZSL_` prefix
-- Interface views including `ZI_SL_PURCHASEORDER` and `ZI_SL_PURCHASEORDERITEM`
-- Consumption/projection views including `ZC_SL_PURCHASEORDER` and `ZC_SL_PURCHASEORDERITEM`
-- Managed behavior and behavior pool `ZBP_I_SL_PURCHASEORDER`
-- Service definition `ZUI_SL_PURCHASEORDER`
-- Published OData V4 service binding
+- `src/zcl_sl_integration_client.clas.abap`: `lc_token_url` and `lc_iflow_url` point to non-working `example.invalid` domains, while `lc_client_id` and `lc_client_secret` contain descriptive non-secret placeholders.
+- `src/zsl_int_target.clas.abap`: the generated technical `SECKEY` value is replaced with `0`. Recreate/regenerate the target in the destination SAP system; this placeholder is not a functioning generated key.
+- Configure real endpoints and OAuth securely via SAP Communication Management / communication arrangements or a secure destination. **Never put live credentials into Git or substitute real values into these public source files.** The integration method is preserved as a portfolio code example; its credential-loading approach must be adapted for production.
+- The published Integration Suite iFlow named **ABAP PO to CAP Shipment** is documented in `integration/iflows/` but its deployable iFlow archive is **not** part of this repository. That artifact and its security material must be provisioned separately.
 
-## Portfolio evidence
+## Reproducibility boundaries
+
+This repository lets recruiters clone and inspect the ABAP/RAP and CAP/Fiori *sources in one place*. It does not represent a one-command deployment: SAP BTP services, tenant-specific communication arrangements, role assignments, integration artifacts and credentials are not distributed. The generated Fiori Orders application was demonstrated through the RAP OData V4 service binding; it is not shipped as a separate UI5 module.
+
+## Evidence
 
 - [Purchase Orders List Report](../../docs/screenshots/abap-rap/abap-rap-purchase-orders-list.png)
 - [Purchase Order Object Page](../../docs/screenshots/abap-rap/abap-rap-purchase-order-object-page.png)
-- [OData V4 service binding](../../docs/screenshots/abap-rap/abap-rap-odata-v4-service-binding.png)
+- [Published OData V4 service binding](../../docs/screenshots/abap-rap/abap-rap-odata-v4-service-binding.png)
+
+Custom procurement DCL and instance authorization enforcement are not claimed for this release; RAP authorization extension points exist, but custom enforcement is not implemented.

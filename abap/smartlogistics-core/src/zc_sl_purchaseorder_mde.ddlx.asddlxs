@@ -1,0 +1,40 @@
+@Metadata.layer: #CORE
+
+annotate entity ZC_SL_PURCHASEORDER with
+{
+  @UI.facet: [
+    {
+      id: 'GeneralInformation',
+      purpose: #STANDARD,
+      type: #IDENTIFICATION_REFERENCE,
+      label: 'General Information',
+      position: 10
+    },
+    {
+      id: 'PurchaseOrderItems',
+      purpose: #STANDARD,
+      type: #PRESENTATIONVARIANT_REFERENCE,
+      label: 'Items',
+      position: 20,
+      targetElement: '_Items'
+    }
+  ]
+
+  @UI.identification: [
+   {
+     type: #FOR_ACTION,
+     dataAction: 'sendToLogistics',
+     label: 'Send to Logistics',
+     position: 90
+   }
+ ]
+  PurchaseOrderUuid;
+
+  @UI.identification: [
+  {
+    position: 80,
+    label: 'Logistics Status'
+  }
+  ]
+  LogisticsStatus;
+}
