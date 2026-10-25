@@ -11,3 +11,11 @@ Do not publish real credentials, tokens, service keys or exploitable account det
 - Use synthetic portfolio data only.
 - Sanitize screenshots, logs, Postman environments and exported integration artifacts.
 - Grant only the scopes and roles required by each business persona.
+
+## Dependency audit
+
+CI runs `npm audit --omit=dev` as an informational production-dependency check.
+
+The directly fixable `body-parser` advisory is addressed by the committed lockfile. The remaining production audit finding is the `node-forge` advisory inherited transitively through `jks-js`, SAP Cloud SDK connectivity and the SAP AI SDK dependency chain. The upstream advisory currently provides no patched `node-forge` release.
+
+The repository intentionally does not use `npm audit fix --force` because npm proposes a breaking SAP AI SDK change rather than a safe patched dependency chain. This dependency should be updated when the upstream SAP/Node dependency chain exposes a patched version.
