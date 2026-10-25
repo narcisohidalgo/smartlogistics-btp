@@ -120,9 +120,11 @@ The local retriever scores tokens and headings. It is not vector search, is not 
 - Business-rule `400` and duplicate `409` responses.
 - Eight passing automated CAP tests.
 
-## Remaining portfolio work
+## Portfolio status
 
-The product implementation through Phase 13 is complete. Phase 14 still requires curated screenshots, a final visual diagram and a concise demo script/video. Phase 15 covers CV, LinkedIn and interview presentation.
+Implementation phases **0–14 are complete**. The public portfolio now includes curated screenshots, the final architecture visual, security/testing evidence and an end-to-end demo guide.
+
+Phase 15 covers CV, LinkedIn, recruiter outreach and interview/demo presentation material.
 
 ## Out of scope
 

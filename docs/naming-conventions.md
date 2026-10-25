@@ -10,34 +10,34 @@
 
 ## ABAP Cloud
 
-Final ABAP object names depend on the namespace and package available in the target system. The project prefix is `ZSL` unless the system requires another registered namespace.
+The project prefix is `ZSL`.
 
 | Object | Pattern | Example |
 |---|---|---|
 | Package | `ZSL_*` | `ZSL_CORE` |
-| Database table | `ZSL_*` | `ZSL_ORDER` |
-| CDS interface view | `ZI_SL_*` | `ZI_SL_PurchaseOrder` |
-| CDS projection view | `ZC_SL_*` | `ZC_SL_PurchaseOrder` |
+| Database table | `ZSL_*` | `ZSL_PO` |
+| CDS interface view | `ZI_SL_*` | `ZI_SL_PURCHASEORDER` |
+| CDS projection view | `ZC_SL_*` | `ZC_SL_PURCHASEORDER` |
 | Behavior pool | `ZBP_I_SL_*` | `ZBP_I_SL_PURCHASEORDER` |
-| Service definition | `ZUI_SL_*` | `ZUI_SL_PROCUREMENT` |
+| Service definition | `ZUI_SL_*` | `ZUI_SL_PURCHASEORDER` |
 | DCL role | `ZR_SL_*` | `ZR_SL_PURCHASEORDER` |
 
 ## CAP and APIs
 
-- CDS namespace: `smartlogistics.logistics`.
+- CDS namespace: `smartlogistics`.
 - Service name: `LogisticsService`.
-- Public API path: `/odata/v4/logistics`.
+- Service path: `/logistics`.
 - Environment variables use uppercase snake case.
 - API payload properties follow the CDS-generated convention unless an integration contract explicitly maps them.
 
 ## Integration Suite
 
-| Artifact | Name |
+| Artifact | Delivered name / convention |
 |---|---|
 | Package | `SmartLogistics` |
-| Order synchronization iFlow | `SL_ORDER_SYNC` |
-| Weather-risk iFlow | `SL_WEATHER_RISK` |
-| Shared value mappings | `SL_*` prefix |
+| Order synchronization iFlow | `ABAP PO to CAP Shipment` |
+| Weather integration | Direct CAP → Open-Meteo call; no weather iFlow in v1.0 |
+| Shared integration artifacts | `SL_*` prefix where applicable |
 
 ## Git
 

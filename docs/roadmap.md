@@ -1,6 +1,6 @@
 # Implementation Roadmap
 
-Status as of 21 October 2026.
+Status as of 25 October 2026.
 
 | Phase | Scope | Status | Verified outcome |
 |---:|---|:---:|---|
@@ -16,19 +16,21 @@ Status as of 21 October 2026.
 | 9 | AI Incident Analyzer | ✅ | Structured analysis implemented with SAP AI mode and deterministic fallback |
 | 10 | SAPUI5 AI Assistant | ✅ | Contextual assistant dialog implemented inside the logistics Object Page |
 | 11 | Grounding / RAG | ✅ | SAP Document Grounding tested in Basic Trial; local lexical grounding remains reproducible |
-| 12 | Security | ✅ | XSUAA, role collections, `@requires`/`@restrict` and JWT forwarding verified |
+| 12 | Security | ✅ | XSUAA, role collections, `@requires`/`@restrict`, technical `system-user` and JWT forwarding verified |
 | 13 | Testing | ✅ | Eight automated tests pass; manual `200`/`401`/`403`/`400`/`409` scenarios validated |
-| 14 | Portfolio | ▶ | Documentation refresh completed; visual evidence and demo assets remain |
-| 15 | Presentation | ⏳ | CV, LinkedIn post and interview/demo narrative not yet finalized |
+| 14 | Portfolio | ✅ | Public repository finalized with architecture, curated evidence, demo guide and audited documentation |
+| 15 | Presentation | ⏳ | CV, LinkedIn and recruiter/interview material are the next deliverables |
 
-## Phase 14 exit criteria
+## Phase 14 closure criteria
 
-- Repository documentation matches the code and deployed architecture.
-- Cloud-only validation is distinguished from local fallback behavior.
-- No secrets, service keys, tokens or generated build artifacts are committed.
-- Curated screenshots show the RAP app, Integration Suite flow, Fiori logistics app, Work Zone security and test result.
-- A concise demo script and optional short video cover the end-to-end story.
+- Repository documentation matches the delivered code and architecture.
+- Cloud-only SAP AI validation is distinguished from the reproducible local fallback.
+- No production service keys, access tokens or generated deployment artifacts are intentionally committed to the public repository.
+- Curated screenshots cover RAP, Integration Suite, Fiori Logistics, weather, AI, security and testing.
+- The final architecture visual is included and linked from the root README.
+- The end-to-end demo guide covers the complete business story.
+- Automated CAP tests are configured to run in GitHub Actions.
 
 ## Delivery principle
 
-Every completed phase must leave demonstrable evidence. When a trial or time-limited SAP service is unavailable, the repository may retain a local adapter or deterministic fallback, but it must not be described as equivalent to the SAP-managed capability.
+Every completed phase leaves demonstrable evidence. When a trial or time-limited SAP service is unavailable, the repository may retain a local adapter or deterministic fallback, but it must not be described as equivalent to the SAP-managed capability.

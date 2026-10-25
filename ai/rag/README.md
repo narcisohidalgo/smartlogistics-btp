@@ -6,7 +6,7 @@ SmartLogistics contains two deliberately separate grounding tracks.
 
 SAP Document Grounding was tested with SAP Generative AI Hub Basic Trial using a vector data repository and an orchestration configuration. This proves hands-on use of the SAP-managed capability, but the time-limited trial path is not the default reproducible application runtime.
 
-The repository keeps [`smartlogistics-grounded-orchestration.json`](../../cap/smartlogistics-extension/ai/smartlogistics-grounded-orchestration.json) as configuration evidence. No service key, token or client secret is committed.
+The repository keeps [`smartlogistics-grounded-orchestration.json`](../../cap/smartlogistics-extension/ai/smartlogistics-grounded-orchestration.json) as sanitized configuration evidence. The original Basic Trial data-repository identifier is replaced with the `<DOCUMENT_REPOSITORY_ID>` placeholder. No service key, token or client secret is committed.
 
 ## 2. Local reproducible retriever
 

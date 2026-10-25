@@ -1,6 +1,6 @@
 # API Testing
 
-The current manual API suite is [`cap/smartlogistics-extension/test.http`](../cap/smartlogistics-extension/test.http), which can be executed from SAP Business Application Studio or a compatible REST client.
+The reproducible manual API suite is [`cap/smartlogistics-extension/test.http`](../cap/smartlogistics-extension/test.http), which can be executed from SAP Business Application Studio or a compatible REST client.
 
 Validated scenarios include:
 
@@ -14,6 +14,6 @@ Validated scenarios include:
 - invalid planned dates → `400`;
 - duplicate purchase-order shipment → `409`.
 
-The Basic authorization values in `test.http` encode the local CAP mock users from `package.json`; they are not BTP credentials. No production tokens or service keys belong in this directory.
+The Basic authorization values in `test.http` encode the local CAP mock users from `package.json`; they are not SAP BTP credentials. No production tokens or service keys belong in this directory.
 
-A Postman collection is optional Phase 14 work because the checked-in HTTP suite already provides reproducible manual coverage.
+The checked-in HTTP suite is the canonical manual API test asset for v1.0; a Postman collection is not required to reproduce the documented scenarios.

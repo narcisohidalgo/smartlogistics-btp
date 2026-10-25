@@ -3,7 +3,7 @@
 > End-to-end SAP Business Technology Platform portfolio project for an agri-food logistics scenario.
 
 [![Status](https://img.shields.io/badge/status-phase%2014%20complete-brightgreen)](#project-status)
-[![Tests](https://img.shields.io/badge/tests-8%20passing-brightgreen)](cap/smartlogistics-extension/test/logistics-service.test.js)
+[![CAP Tests](https://github.com/narcisohidalgo/smartlogistics-btp/actions/workflows/cap-tests.yml/badge.svg)](https://github.com/narcisohidalgo/smartlogistics-btp/actions/workflows/cap-tests.yml)
 [![SAP BTP](https://img.shields.io/badge/SAP-BTP-0A6ED1)](https://www.sap.com/products/technology-platform.html)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
@@ -105,7 +105,7 @@ Local development uses named mock users defined in `package.json`; those test pa
 
 ## Automated verification
 
-The CAP test suite uses `@cap-js/cds-test`. The latest validated result is **8 passing tests**:
+The CAP test suite uses `@cap-js/cds-test`. The latest validated result is **8 passing tests**. GitHub Actions runs the suite automatically for CAP changes on pushes to `main` and pull requests:
 
 - Viewer reads shipments.
 - Viewer receives `403` for the AI Assistant.
@@ -187,7 +187,7 @@ Phases **0–14 are complete**.
 
 | Certification | Evidence in SmartLogistics |
 |---|---|
-| C_ABAPD | ABAP Cloud, CDS, managed RAP, compositions, actions, behavior definitions, and OData V4 |
+| C_ABAPD | ABAP Cloud, CDS, managed RAP, draft, compositions, actions, behavior definitions, and OData V4 |
 | C_CPE | CAP Node.js, CDS, custom handlers/actions, SAP HANA Cloud, and Cloud Foundry |
 | C_CPI | Published ABAP-to-CAP integration flow, payload mapping, and API integration |
 | C_AIG | Structured AI scenarios, SAP AI integration path, separate SAP Document Grounding validation, and local grounded fallback |

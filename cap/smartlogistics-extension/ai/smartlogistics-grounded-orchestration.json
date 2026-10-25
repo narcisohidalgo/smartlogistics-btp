@@ -8,7 +8,7 @@
             {
               "id": "filter1",
               "data_repositories": [
-                "bc51b9b4-67b9-4b4c-b51d-c2a7e6b46699"
+                "<DOCUMENT_REPOSITORY_ID>"
               ],
               "search_config": {
                 "max_document_count": 1
@@ -29,7 +29,7 @@
           "template": [
             {
               "role": "system",
-              "content": "You are a grounded AI assistant.\n\nAnswer the user's question using only the information provided in the grounded context.\n\nIf the grounded context does not contain enough information to answer the question, state that the answer cannot be determined from the available documents.\n\nDo not invent products, specifications, prices, or other facts."
+              "content": "You are a grounded AI assistant.\n\nAnswer the user\'s question using only the information provided in the grounded context.\n\nIf the grounded context does not contain enough information to answer the question, state that the answer cannot be determined from the available documents.\n\nDo not invent products, specifications, prices, or other facts."
             },
             {
               "role": "user",

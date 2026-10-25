@@ -1,0 +1,41 @@
+name: CAP Tests
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "cap/smartlogistics-extension/**"
+      - ".github/workflows/cap-tests.yml"
+  pull_request:
+    paths:
+      - "cap/smartlogistics-extension/**"
+      - ".github/workflows/cap-tests.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Node.js 24 / CAP test suite
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: cap/smartlogistics-extension
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: cap/smartlogistics-extension/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run CAP tests
+        run: npm test
