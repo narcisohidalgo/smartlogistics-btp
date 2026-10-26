@@ -2,7 +2,6 @@
 
 > End-to-end SAP Business Technology Platform portfolio project for an agri-food logistics scenario.
 
-[![Status](https://img.shields.io/badge/status-phase%2015%20complete-brightgreen)](#project-status)
 [![CAP Tests](https://github.com/narcisohidalgo/smartlogistics-btp/actions/workflows/cap-tests.yml/badge.svg)](https://github.com/narcisohidalgo/smartlogistics-btp/actions/workflows/cap-tests.yml)
 [![SAP BTP](https://img.shields.io/badge/SAP-BTP-0A6ED1)](https://www.sap.com/products/technology-platform.html)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
@@ -186,16 +185,6 @@ smartlogistics-btp/
 - [Integration Suite iFlow source](integration/iflows/README.md)
 - [Fiori logistics app](fiori/shipments/README.md)
 - [AI Assistant](fiori/ai-assistant/README.md)
-
-## Project status
-
-Phases **0–15 are complete at the portfolio-materials level**.
-
-**Phase 14 — Portfolio** delivers the public ABAP and CAP sources, curated technical documentation, architecture diagram, visual evidence, security and testing proof, and an end-to-end demo guide.
-
-**Phase 15 — Professional presentation** delivers a two-page SAP-focused CV, a LinkedIn project/featured entry and project launch post, a recruiter-oriented two-minute pitch, a technical project walkthrough and recruiter follow-up/candidacy templates. The CV contains personal contact information and is **not stored in this public source repository**.
-
-**Further work outside the completed presentation phase:** technical interview rehearsal was intentionally postponed; a fresh abapGit import and activation on a separate ABAP system remain unverified, and reproducing the entire BTP landscape requires your own platform services and integration configuration. The published Integration Suite iFlow export is not distributed here.
 
 ## Professional links
 
