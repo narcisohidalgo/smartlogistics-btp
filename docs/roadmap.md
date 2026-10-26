@@ -1,6 +1,6 @@
 # Implementation Roadmap
 
-Status as of 25 October 2026.
+Status as of 26 October 2026.
 
 | Phase | Scope | Status | Verified outcome |
 |---:|---|:---:|---|
@@ -19,7 +19,16 @@ Status as of 25 October 2026.
 | 12 | Security | ✅ | XSUAA, role collections, `@requires`/`@restrict`, technical `system-user` and JWT forwarding verified |
 | 13 | Testing | ✅ | Eight automated tests pass; manual `200`/`401`/`403`/`400`/`409` scenarios validated |
 | 14 | Portfolio | ✅ | Public repository finalized with architecture, curated evidence, demo guide and audited documentation |
-| 15 | Presentation | ⏳ | CV, LinkedIn and recruiter/interview material are the next deliverables |
+| 15 | Presentation | ✅ | Two-page SAP CV, LinkedIn project/featured entry and launch post, recruiter pitch, technical walkthrough and follow-up templates prepared |
+
+## Phase 15 delivery and boundaries
+
+- Recruiter-facing two-page CV and LinkedIn project presentation prepared, including a link to this public portfolio.
+- SmartLogistics architecture shared in the LinkedIn launch post and featured section.
+- Two-minute recruiter pitch, technical walkthrough and follow-up/candidacy message templates prepared.
+- The planned mock technical interview is deferred and can be practiced separately.
+- The CV is **not committed to GitHub** because it contains personal contact details.
+- Runtime-specific deployment, fresh abapGit re-import/activation, credential rotation and integration service configuration are separate technical tasks, not completed by the portfolio presentation phase.
 
 ## Phase 14 closure criteria
 
