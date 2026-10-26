@@ -11,7 +11,16 @@ The delivered iFlow is **`ABAP PO to CAP Shipment`**. Its responsibility is to:
 3. call the protected CAP endpoint;
 4. expose message-processing failures for diagnosis rather than silently losing the message.
 
-The repository documents the integration but does not contain exported tenant artifacts or security material. Credentials remain in BTP service bindings/security material.
+The repository includes a **sanitized export of the iFlow**. Its original tenant-specific CAP receiver endpoint and OAuth2 credential alias have been replaced by non-operational example settings. The unmodified tenant export and actual security material are **not published**.
+
+## Source and importable artifact
+
+- [Sanitized iFlow ZIP](ABAP_PO_to_CAP_Shipment_sanitized.zip) — SAP Cloud Integration artifact with the original seven export members (receiver endpoint and credential alias redacted).
+- [Groovy message mapping](abap-po-to-cap-shipment/MapPurchaseOrder.groovy) — readable version of the script embedded in the archive.
+
+The sender adapter is HTTPS with role-based authorization (`ESBMessaging.send`). The receiver is HTTP POST to the CAP `LogisticsService` `Shipments` endpoint using an OAuth2 Client Credentials alias. `MapPurchaseOrder.groovy` maps `purchaseOrderId`, `orderDate` and `deliveryDate` to a shipment payload (the incoming `supplier` field is not used by this v1 mapping); the shipped v1 script uses demonstration defaults for carrier, route and tracking data.
+
+**To import:** in SAP Cloud Integration, import the sanitized ZIP as an integration flow, configure its receiver adapter URL to point to *your own* CAP `Shipments` endpoint, create/assign your own OAuth2 Client Credentials security material (and required roles/destinations), and only then deploy and test it. The placeholders `https://example.invalid/logistics/Shipments` and `PORTFOLIO_REPLACE_WITH_OAUTH2_ALIAS` are intentionally nonfunctional. Never commit real tenant hostnames or credential material. The sanitized export has been checked for archive integrity and BPMN XML validity, but importing and deploying this modified archive in a new tenant **have not been verified**.
 
 ## Technical identity
 

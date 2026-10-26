@@ -24,3 +24,7 @@ The repository intentionally does not use `npm audit fix --force` because npm pr
 
 The ADT/abapGit source published in `abap/smartlogistics-core/src/` is a sanitized portfolio snapshot. The OAuth token URL, integration endpoint, client ID and client secret from the original export were replaced with non-operational sample values in `ZCL_SL_INTEGRATION_CLIENT`. A generated communication-target key was replaced with `0` in `ZSL_INT_TARGET`. **Neither file is ready for production integration as-is.** Re-create the generated communication target and configure approved authentication with SAP Communication Management/secure destinations. Do not replace placeholders by committing real credentials to this repository.
 
+
+## Integration Suite portfolio export
+
+`integration/iflows/ABAP_PO_to_CAP_Shipment_sanitized.zip` is a copy of the individual exported Cloud Integration flow, not a tenant package or live environment backup. Its hardcoded CAP receiver URL and OAuth2 credential alias were replaced with deliberately nonfunctional placeholders. Only the ZIP sanitized for publication must be used for portfolio sharing. Restore these references securely within the SAP Cloud Integration UI in your own tenant before deploying; do not push configuration with secrets or internal endpoints to this public repository. The deployed flow was not modified as part of publication.

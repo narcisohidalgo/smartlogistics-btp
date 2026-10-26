@@ -25,7 +25,7 @@ The public snapshot deliberately does **not** expose the original OAuth client c
 - `src/zcl_sl_integration_client.clas.abap`: `lc_token_url` and `lc_iflow_url` point to non-working `example.invalid` domains, while `lc_client_id` and `lc_client_secret` contain descriptive non-secret placeholders.
 - `src/zsl_int_target.clas.abap`: the generated technical `SECKEY` value is replaced with `0`. Recreate/regenerate the target in the destination SAP system; this placeholder is not a functioning generated key.
 - Configure real endpoints and OAuth securely via SAP Communication Management / communication arrangements or a secure destination. **Never put live credentials into Git or substitute real values into these public source files.** The integration method is preserved as a portfolio code example; its credential-loading approach must be adapted for production.
-- The published Integration Suite iFlow named **ABAP PO to CAP Shipment** is documented in `integration/iflows/` but its deployable iFlow archive is **not** part of this repository. That artifact and its security material must be provisioned separately.
+- The published Integration Suite iFlow named **ABAP PO to CAP Shipment** is documented in `integration/iflows/` has a **sanitized** iFlow export in [`integration/iflows/`](../../integration/iflows/). The target tenant still requires its own OAuth2 credentials, receiver URL and related security configuration.
 
 ## Reproducibility boundaries
 
