@@ -1,6 +1,6 @@
 _schema-version: 3.3.0
 ID: smartlogistics-cap
-description: A simple CAP project.
+description: SmartLogistics BTP logistics extension with SAP CAP, HANA Cloud, XSUAA and Fiori.
 version: 1.0.0
 modules:
 - name: smartlogistics-cap-srv
