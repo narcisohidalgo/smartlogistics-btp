@@ -176,6 +176,7 @@ smartlogistics-btp/
 - [Solution architecture](docs/architecture/solution-architecture.md)
 - [Final architecture diagram](docs/architecture/smartlogistics-btp-architecture.png)
 - [End-to-End Demo](docs/end-to-end-demo.md)
+- [Reproduction and deployment guide](docs/deployment-guide.md)
 - [Portfolio screenshots](docs/screenshots/README.md)
 - [Architecture boundary decision](docs/decisions/ADR-001-system-boundaries.md)
 - [Implementation roadmap](docs/roadmap.md)
