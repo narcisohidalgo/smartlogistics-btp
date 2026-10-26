@@ -24,6 +24,6 @@ Priority uses `P0` for the end-to-end path, `P1` for portfolio quality and `P2` 
 | SL-120 | P0 | End-to-end authorization | ✅ | XSUAA, roles, technical identity, restrictions and JWT forwarding |
 | SL-130 | P1 | Critical tests | ✅ | 8 automated tests plus manual HTTP scenarios |
 | SL-140 | P1 | Portfolio evidence | ✅ | Architecture, 18 curated screenshots, demo guide and final documentation audit completed |
-| SL-150 | P1 | CV and LinkedIn presentation | ⏳ | Starts after the audited portfolio repository is finalized |
+| SL-150 | P1 | CV, LinkedIn and professional portfolio presentation | ✅ | Two-page CV, LinkedIn project/featured entry and launch post, recruiter pitch, technical walkthrough and outreach templates prepared |
 
 Legend: ✅ complete · ◐ non-blocking future hardening / partially implemented · ▶ in progress · ⏳ not started.
