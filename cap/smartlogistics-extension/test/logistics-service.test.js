@@ -3,6 +3,7 @@ import cds from '@sap/cds'
 const {
   GET,
   POST,
+  PATCH,
   expect,
   defaults
 } = cds.test()
@@ -246,6 +247,40 @@ describe('LogisticsService - Shipments', () => {
       )
   })
 
+
+  it('rejects invalid dates in a partial shipment update', async () => {
+    const shipmentId = '22222222-2222-2222-2222-222222222222'
+
+    const response = await PATCH(
+      `/Shipments(${shipmentId})`,
+      { plannedArrival: '2026-09-29T00:00:00Z' },
+      {
+        auth: { username: 'operator', password: 'operator' },
+        validateStatus: status => status === 400
+      }
+    )
+
+    expect(response.status).to.equal(400)
+    expect(response.data.error.message)
+      .to.equal('Planned arrival cannot be earlier than planned departure')
+  })
+
+  it('rejects a duplicate purchase order on shipment update', async () => {
+    const shipmentId = '22222222-2222-2222-2222-222222222222'
+
+    const response = await PATCH(
+      `/Shipments(${shipmentId})`,
+      { purchaseOrderId: 'PO00000001' },
+      {
+        auth: { username: 'operator', password: 'operator' },
+        validateStatus: status => status === 409
+      }
+    )
+
+    expect(response.status).to.equal(409)
+    expect(response.data.error.message)
+      .to.equal('Shipment already exists for PO00000001')
+  })
 
   it('rejects duplicate shipment for the same purchase order', async () => {
 

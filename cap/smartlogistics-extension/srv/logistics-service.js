@@ -33,17 +33,19 @@ export default class LogisticsService extends cds.ApplicationService {
       }
     })
 
-    this.before('CREATE', Shipments, async req => {
+    this.before(['CREATE', 'UPDATE'], Shipments, async req => {
 
       const { purchaseOrderId } = req.data
-
       if (!purchaseOrderId) return
 
       const existingShipment = await SELECT.one
         .from(Shipments)
+        .columns('ID')
         .where({ purchaseOrderId })
 
-      if (existingShipment) {
+      const currentId = req.params?.at(-1)?.ID ?? req.data.ID
+
+      if (existingShipment && existingShipment.ID !== currentId) {
         return req.reject(
           409,
           `Shipment already exists for ${purchaseOrderId}`
@@ -51,12 +53,31 @@ export default class LogisticsService extends cds.ApplicationService {
       }
     })
 
-    this.before(['CREATE', 'UPDATE'], Shipments, req => {
+    this.before(['CREATE', 'UPDATE'], Shipments, async req => {
 
-      const {
-        plannedDeparture,
-        plannedArrival
-      } = req.data
+      let { plannedDeparture, plannedArrival } = req.data
+
+      if (
+        req.event === 'UPDATE' &&
+        (plannedDeparture === undefined || plannedArrival === undefined)
+      ) {
+        const currentId = req.params?.at(-1)?.ID ?? req.data.ID
+
+        if (currentId) {
+          const existingShipment = await SELECT.one
+            .from(Shipments)
+            .columns('plannedDeparture', 'plannedArrival')
+            .where({ ID: currentId })
+
+          if (plannedDeparture === undefined) {
+            plannedDeparture = existingShipment?.plannedDeparture
+          }
+
+          if (plannedArrival === undefined) {
+            plannedArrival = existingShipment?.plannedArrival
+          }
+        }
+      }
 
       if (
         plannedDeparture &&
