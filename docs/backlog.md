@@ -22,7 +22,7 @@ Priority uses `P0` for the end-to-end path, `P1` for portfolio quality and `P2` 
 | SL-100 | P1 | AI Assistant | ✅ | Shipment-aware SAPUI5 dialog extension |
 | SL-110 | P1 | Grounded answers | ✅ | SAP Document Grounding trial plus clearly separated local lexical retrieval |
 | SL-120 | P0 | End-to-end authorization | ✅ | XSUAA, roles, technical identity, restrictions and JWT forwarding |
-| SL-130 | P1 | Critical tests | ✅ | 8 automated tests plus manual HTTP scenarios |
+| SL-130 | P1 | Critical tests | ✅ | 10 automated tests plus manual HTTP scenarios |
 | SL-140 | P1 | Portfolio evidence | ✅ | Architecture, 18 curated screenshots, demo guide and final documentation audit completed |
 | SL-150 | P1 | CV, LinkedIn and professional portfolio presentation | ✅ | Two-page CV, LinkedIn project/featured entry and launch post, recruiter pitch, technical walkthrough and outreach templates prepared |
 

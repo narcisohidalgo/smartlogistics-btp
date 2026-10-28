@@ -100,8 +100,10 @@ Highlight that the tests cover:
 - incident resolution
 - invalid dates
 - duplicate purchase orders
+- invalid partial date updates
+- duplicate purchase-order IDs introduced by updates
 
-All eight automated tests pass successfully.
+All ten automated tests pass successfully.
 
 ## 10. Architecture and closing
 

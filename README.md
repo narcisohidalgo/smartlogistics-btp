@@ -38,7 +38,7 @@ For a guided walkthrough, see the [End-to-End Demo](docs/end-to-end-demo.md).
 - Project-owned operational knowledge with a reproducible local lexical retriever and source traceability.
 - Separate SAP Document Grounding validation using SAP Generative AI Hub Basic Trial / SAP AI Launchpad.
 - XSUAA scopes, role templates, role collections, destinations, and JWT forwarding.
-- Eight automated CAP tests plus manual API scenarios covering `200`, `401`, `403`, `400`, and `409` responses.
+- Ten automated CAP tests plus manual API scenarios covering `200`, `401`, `403`, `400`, and `409` responses.
 
 ## End-to-end flow
 
@@ -113,7 +113,7 @@ Both the **Eclipse ADT ABAP Cloud source** and the **SAP Business Application St
 
 ## Automated verification
 
-The CAP test suite uses `@cap-js/cds-test`. GitHub Actions runs the suite automatically for CAP changes on pushes to `main` and pull requests. The validated result is **8 passing tests**:
+The CAP test suite uses `@cap-js/cds-test`. GitHub Actions runs the suite automatically for CAP changes on pushes to `main` and pull requests. The validated result is **10 passing tests**:
 
 - Viewer reads shipments.
 - Viewer receives `403` for the AI Assistant.
@@ -123,6 +123,8 @@ The CAP test suite uses `@cap-js/cds-test`. GitHub Actions runs the suite automa
 - Operator resolves an incident.
 - Invalid dates return `400`.
 - A duplicate purchase-order shipment returns `409`.
+- A partial shipment date update cannot create an invalid arrival/departure order (`400`).
+- Changing an existing shipment to another shipment's purchase-order ID returns `409`.
 
 Run locally:
 

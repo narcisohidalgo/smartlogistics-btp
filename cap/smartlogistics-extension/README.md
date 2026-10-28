@@ -58,7 +58,7 @@ Local authentication uses the mock `viewer`, `operator` and `supervisor` users d
 npm test
 ```
 
-Validated result: **8 passing tests**. The suite covers read access, authorization, AI Assistant access, local grounded sources, delivery, incident resolution, invalid dates and duplicate purchase-order protection. GitHub Actions runs the suite automatically for CAP changes on pushes to `main` and pull requests. [`test.http`](test.http) contains manual API scenarios.
+Validated result: **10 passing tests**. The suite covers read access, authorization, AI Assistant access, local grounded sources, delivery, incident resolution, invalid dates and duplicate purchase-order protection, including partial updates of existing shipments. GitHub Actions runs the suite automatically for CAP changes on pushes to `main` and pull requests. [`test.http`](test.http) contains manual API scenarios.
 
 ## AI modes
 

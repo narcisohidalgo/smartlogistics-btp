@@ -117,7 +117,7 @@ Separate Approve/Cancel business-state actions are not implemented in v1.0.
 - JWT forwarding from Work Zone through Destination service to CAP.
 - Role-based `200`, `401` and `403` responses.
 - Business-rule `400` and duplicate `409` responses.
-- Eight passing automated CAP tests.
+- Ten passing automated CAP tests, including partial-update date and purchase-order conflict checks.
 
 ## Out of scope
 

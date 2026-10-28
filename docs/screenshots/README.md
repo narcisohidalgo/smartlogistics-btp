@@ -40,7 +40,7 @@ The SAP Document Grounding screenshots document a separate SAP Generative AI Hub
 
 ## Testing
 
-- [Automated CAP tests — 8 passing](testing/cap-automated-tests-8-passed.png)
+- [Historical automated CAP test run — 8 passing](testing/cap-automated-tests-8-passed.png). The current GitHub Actions regression suite runs **10 tests**, including two additional update-validation cases; see the [latest workflow runs](https://github.com/narcisohidalgo/smartlogistics-btp/actions/workflows/cap-tests.yml).
 - [Viewer blocked from Operator action — 403](testing/manual-api-rbac-403.png)
 
 ## Sanitization
