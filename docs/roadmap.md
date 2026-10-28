@@ -1,6 +1,6 @@
 # Implementation Roadmap
 
-Status as of 26 October 2026.
+Status as of 28 October 2026.
 
 | Phase | Scope | Status | Verified outcome |
 |---:|---|:---:|---|
